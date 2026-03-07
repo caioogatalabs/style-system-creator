@@ -49,8 +49,8 @@ function LivePreview({
         className="p-6"
         style={{
           border: `${borderWidth} ${borderStyle} ${borderColor}`,
-          borderRadius: 'var(--radius-token-lg)',
-          boxShadow: 'var(--shadow-token-md)',
+          borderRadius: 'var(--radius-component-lg)',
+          boxShadow: 'var(--shadow-md)',
           backgroundColor: 'var(--color-bg-surface-primary)',
           width: 220,
         }}
@@ -77,7 +77,7 @@ function LivePreview({
             className="px-4 py-2.5 text-sm outline-none"
             style={{
               border: `${borderWidth} ${borderStyle} ${borderColor}`,
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               backgroundColor: 'var(--color-bg-surface-primary)',
               color: 'var(--color-text-primary)',
               fontFamily: 'var(--font-body)',
@@ -95,7 +95,7 @@ function LivePreview({
             className="px-4 py-2.5 text-sm outline-none"
             style={{
               border: `2px solid var(--color-bg-fill-primary)`,
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               backgroundColor: 'var(--color-bg-surface-primary)',
               color: 'var(--color-text-primary)',
               fontFamily: 'var(--font-body)',
@@ -114,7 +114,7 @@ function LivePreview({
           style={{
             backgroundColor: 'var(--color-bg-fill-primary)',
             color: 'var(--color-text-inverse)',
-            borderRadius: 'var(--radius-token-md)',
+            borderRadius: 'var(--radius-component-md)',
             border: 'none',
             fontFamily: 'var(--font-body)',
           }}
@@ -126,7 +126,7 @@ function LivePreview({
           style={{
             backgroundColor: 'transparent',
             color: 'var(--color-text-primary)',
-            borderRadius: 'var(--radius-token-md)',
+            borderRadius: 'var(--radius-component-md)',
             border: `${borderWidth} ${borderStyle} ${borderColor}`,
             fontFamily: 'var(--font-body)',
           }}
@@ -196,7 +196,7 @@ export function SurfaceOverlayPanel() {
                       config.surface.radius === opt.value
                         ? 'var(--color-bg-fill-primary)'
                         : 'var(--color-border-primary)',
-                    borderRadius: 'var(--radius-token-sm)',
+                    borderRadius: 'var(--radius-component-sm)',
                     backgroundColor:
                       config.surface.radius === opt.value
                         ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
@@ -230,7 +230,7 @@ export function SurfaceOverlayPanel() {
                       config.surface.elevation === opt.value
                         ? 'var(--color-bg-fill-primary)'
                         : 'var(--color-border-primary)',
-                    borderRadius: 'var(--radius-token-sm)',
+                    borderRadius: 'var(--radius-component-sm)',
                     backgroundColor:
                       config.surface.elevation === opt.value
                         ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
@@ -265,7 +265,7 @@ export function SurfaceOverlayPanel() {
                         borderPresetIdx === i ? 'var(--color-bg-fill-primary)' : 'var(--color-border-primary)',
                       color:
                         borderPresetIdx === i ? 'var(--color-bg-fill-primary)' : 'var(--color-text-secondary)',
-                      borderRadius: 'var(--radius-token-sm)',
+                      borderRadius: 'var(--radius-component-sm)',
                       backgroundColor:
                         borderPresetIdx === i
                           ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
@@ -291,7 +291,7 @@ export function SurfaceOverlayPanel() {
                       borderColor:
                         borderStyle === s ? 'var(--color-bg-fill-primary)' : 'var(--color-border-primary)',
                       color: borderStyle === s ? 'var(--color-bg-fill-primary)' : 'var(--color-text-secondary)',
-                      borderRadius: 'var(--radius-token-sm)',
+                      borderRadius: 'var(--radius-component-sm)',
                       backgroundColor:
                         borderStyle === s
                           ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
@@ -307,7 +307,7 @@ export function SurfaceOverlayPanel() {
                 className="p-3 border"
                 style={{
                   borderColor: 'var(--color-border-primary)',
-                  borderRadius: 'var(--radius-token-sm)',
+                  borderRadius: 'var(--radius-component-sm)',
                 }}
               >
                 <p className="text-[9px] tracking-[0.15em] uppercase mb-1" style={{ color: 'var(--color-text-secondary)' }}>
@@ -341,7 +341,7 @@ export function SurfaceOverlayPanel() {
                     className="flex items-center justify-between px-4 py-3 border text-left transition-colors hover:border-primary"
                     style={{
                       borderColor: 'var(--color-border-primary)',
-                      borderRadius: 'var(--radius-token-sm)',
+                      borderRadius: 'var(--radius-component-sm)',
                     }}
                   >
                     <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>

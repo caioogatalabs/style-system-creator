@@ -71,7 +71,7 @@ export function TypographyOverlayPanel() {
               style={{
                 backgroundColor: activeTarget === t ? 'var(--color-bg-fill-primary)' : 'transparent',
                 color: activeTarget === t ? 'var(--color-text-inverse)' : 'var(--color-text-secondary)',
-                borderRadius: 'var(--radius-token-sm)',
+                borderRadius: 'var(--radius-component-sm)',
               }}
             >
               {t === 'heading' ? 'Heading' : 'Body'}
@@ -134,7 +134,7 @@ export function TypographyOverlayPanel() {
             backgroundColor: 'oklch(0.10 0 0)',
             borderColor: 'var(--color-border-primary)',
             color: 'var(--color-text-primary)',
-            borderRadius: 'var(--radius-token-sm)',
+            borderRadius: 'var(--radius-component-sm)',
             fontFamily: 'var(--font-body)',
           }}
         />
@@ -190,7 +190,7 @@ export function TypographyOverlayPanel() {
                     config.typography.scaleRatio === r.value
                       ? 'var(--color-bg-surface-primary)'
                       : 'transparent',
-                  borderRadius: 'var(--radius-token-sm)',
+                  borderRadius: 'var(--radius-component-sm)',
                 }}
               >
                 <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>

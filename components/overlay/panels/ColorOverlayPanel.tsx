@@ -103,7 +103,7 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
             className="relative h-10 w-10 overflow-hidden border shrink-0"
             style={{
               borderColor: `oklch(1 0 0 / 0.25)`,
-              borderRadius: 'var(--radius-token-sm)',
+              borderRadius: 'var(--radius-component-sm)',
             }}
           >
             <input
@@ -127,7 +127,7 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
               backgroundColor: 'oklch(0 0 0 / 0.25)',
               borderColor: error ? 'var(--color-error)' : `oklch(1 0 0 / 0.25)`,
               color: contrastColor,
-              borderRadius: 'var(--radius-token-sm)',
+              borderRadius: 'var(--radius-component-sm)',
             }}
           />
         </div>

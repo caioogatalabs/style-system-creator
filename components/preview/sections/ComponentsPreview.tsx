@@ -51,7 +51,7 @@ export function ComponentsPreview() {
             style={{
               backgroundColor: 'var(--color-bg-fill-primary)',
               color: 'var(--color-text-inverse)',
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               fontFamily: 'var(--font-body)',
             }}
           >
@@ -63,7 +63,7 @@ export function ComponentsPreview() {
             style={{
               backgroundColor: 'var(--color-bg-fill-secondary)',
               color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               fontFamily: 'var(--font-body)',
             }}
           >
@@ -75,7 +75,7 @@ export function ComponentsPreview() {
             style={{
               borderColor: 'var(--color-border-primary)',
               color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               fontFamily: 'var(--font-body)',
               backgroundColor: 'transparent',
             }}
@@ -87,7 +87,7 @@ export function ComponentsPreview() {
             className="px-5 py-2.5 text-sm font-medium transition-colors hover:opacity-70"
             style={{
               color: 'var(--color-text-secondary)',
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               fontFamily: 'var(--font-body)',
               backgroundColor: 'transparent',
             }}
@@ -100,7 +100,7 @@ export function ComponentsPreview() {
             style={{
               backgroundColor: 'var(--color-error)',
               color: 'oklch(0.97 0 0)',
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               fontFamily: 'var(--font-body)',
             }}
           >
@@ -127,7 +127,7 @@ export function ComponentsPreview() {
               borderColor: 'var(--color-border-primary)',
               backgroundColor: 'oklch(0.10 0 0)',
               color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-token-md)',
+              borderRadius: 'var(--radius-component-md)',
               fontFamily: 'var(--font-body)',
             }}
           />
@@ -157,7 +157,7 @@ export function ComponentsPreview() {
                   backgroundColor: badge.bg,
                   color: badge.fg,
                   borderColor: badge.border ? 'var(--color-border-primary)' : 'transparent',
-                  borderRadius: 'var(--radius-token-full)',
+                  borderRadius: 'var(--radius-component-full)',
                   fontFamily: 'var(--font-body)',
                 }}
               >
@@ -184,8 +184,8 @@ export function ComponentsPreview() {
               style={{
                 borderColor: style === 'Ghost' ? 'transparent' : 'var(--color-border-primary)',
                 backgroundColor: style === 'Filled' ? 'oklch(0.12 0 0)' : 'transparent',
-                borderRadius: 'var(--radius-token-lg)',
-                boxShadow: style === 'Outlined' ? 'var(--shadow-token-md)' : 'none',
+                borderRadius: 'var(--radius-component-lg)',
+                boxShadow: style === 'Outlined' ? 'var(--shadow-md)' : 'none',
               }}
             >
               <p
