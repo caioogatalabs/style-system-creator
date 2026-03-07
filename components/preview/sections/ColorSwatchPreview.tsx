@@ -55,14 +55,14 @@ export function ColorSwatchPreview() {
     <section
       className="border-b px-6 py-16"
       style={{
-        borderColor: 'var(--color-border-var)',
+        borderColor: 'var(--color-border-primary)',
         backgroundColor: 'var(--color-bg)',
       }}
     >
       {/* Section header */}
       <div
         className="mb-12 flex items-start gap-6 border-b pb-6"
-        style={{ borderColor: 'var(--color-border-var)' }}
+        style={{ borderColor: 'var(--color-border-primary)' }}
       >
         <span
           className="font-mono text-7xl font-light leading-none select-none"
@@ -73,13 +73,13 @@ export function ColorSwatchPreview() {
         <div className="flex items-center gap-3 pt-4">
           <span
             className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
-            style={{ borderColor: 'var(--color-fg-muted)', color: 'var(--color-fg-muted)' }}
+            style={{ borderColor: 'var(--color-text-secondary)', color: 'var(--color-text-secondary)' }}
           >
             1
           </span>
           <span
             className="text-xs tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-fg-muted)' }}
+            style={{ color: 'var(--color-text-secondary)' }}
           >
             Colors
           </span>
@@ -146,7 +146,7 @@ export function ColorSwatchPreview() {
         <div key={name} className="mb-4">
           <p
             className="mb-2 text-[9px] tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-fg-muted)', opacity: 0.5 }}
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
           >
             {COLOR_LABELS[name]} scale
           </p>
