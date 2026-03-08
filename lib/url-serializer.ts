@@ -14,17 +14,25 @@ export function serializeConfig(config: TokenConfig): URLSearchParams {
   params.set('bw', String(config.typography.bodyWeight));
   params.set('r', config.surface.radius);
   params.set('el', config.surface.elevation);
+  if (config.theme !== 'dark') params.set('th', config.theme);
   return params;
 }
 
 const VALID_RADIUS: RadiusPreset[] = ['none', 'sm', 'md', 'lg', 'full'];
 const VALID_ELEVATION: ElevationLevel[] = ['flat', 'subtle', 'elevated', 'floating'];
+const VALID_THEMES = ['light', 'dark'] as const;
+type ThemeValue = typeof VALID_THEMES[number];
 
 export function deserializeConfig(params: URLSearchParams): TokenConfig {
   const def = DEFAULT_TOKEN_CONFIG;
 
   const radius = params.get('r');
   const elevation = params.get('el');
+
+  const themeParam = params.get('th');
+  const theme: ThemeValue = (themeParam && VALID_THEMES.includes(themeParam as ThemeValue))
+    ? (themeParam as ThemeValue)
+    : 'dark';
 
   return {
     colors: {
@@ -50,5 +58,6 @@ export function deserializeConfig(params: URLSearchParams): TokenConfig {
         : def.surface.elevation,
     },
     spacing: def.spacing,
+    theme,
   };
 }
