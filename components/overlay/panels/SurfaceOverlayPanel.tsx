@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
-import type { RadiusPreset, ElevationLevel } from '@/types/tokens';
+import type { ElevationLevel } from '@/types/tokens';
 
 type SurfaceTab = 'radius' | 'elevation' | 'borders' | 'card';
 
-const RADIUS_OPTIONS: { value: RadiusPreset; label: string; preview: string }[] = [
-  { value: 'none', label: 'None', preview: '0px' },
-  { value: 'sm', label: 'Small', preview: '4px' },
-  { value: 'md', label: 'Medium', preview: '8px' },
-  { value: 'lg', label: 'Large', preview: '16px' },
-  { value: 'full', label: 'Full', preview: '9999px' },
+const RADIUS_OPTIONS: { value: number; label: string; preview: string }[] = [
+  { value: 0, label: 'None', preview: '0px' },
+  { value: 4, label: 'Small', preview: '4px' },
+  { value: 8, label: 'Medium', preview: '8px' },
+  { value: 16, label: 'Large', preview: '16px' },
+  { value: 9999, label: 'Full', preview: '9999px' },
 ];
 
 const ELEVATION_OPTIONS: { value: ElevationLevel; label: string; description: string }[] = [

@@ -17,7 +17,7 @@ export const DEFAULT_TOKEN_CONFIG: TokenConfig = {
     bodyWeight: 400,
   },
   surface: {
-    radius: 'md',
+    radius: 8,
     elevation: 'subtle',
   },
   spacing: {

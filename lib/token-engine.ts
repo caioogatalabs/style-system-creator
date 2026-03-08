@@ -8,7 +8,6 @@ import type {
   SpacingScale,
   SurfaceTokens,
   ResolvedTokens,
-  RadiusPreset,
   ElevationLevel,
 } from '@/types/tokens';
 
@@ -132,14 +131,6 @@ export function generateSpacingScale(baseUnit: number): SpacingScale {
 
 // ─── Surface Tokens ──────────────────────────────────────────────────────────
 
-const RADIUS_VALUES: Record<RadiusPreset, [sm: string, md: string, lg: string]> = {
-  none: ['0px', '0px', '0px'],
-  sm: ['2px', '4px', '6px'],
-  md: ['4px', '8px', '12px'],
-  lg: ['8px', '16px', '24px'],
-  full: ['9999px', '9999px', '9999px'],
-};
-
 const SHADOW_VALUES: Record<ElevationLevel, [sm: string, md: string, lg: string]> = {
   flat: ['none', 'none', 'none'],
   subtle: [
@@ -160,8 +151,18 @@ const SHADOW_VALUES: Record<ElevationLevel, [sm: string, md: string, lg: string]
 };
 
 export function resolveSurfaceTokens(surface: TokenConfig['surface']): SurfaceTokens {
-  const [radiusSm, radiusMd, radiusLg] = RADIUS_VALUES[surface.radius];
-  const [shadowSm, shadowMd, shadowLg] = SHADOW_VALUES[surface.elevation];
+  const { radius, elevation } = surface;
+
+  let radiusSm: string, radiusMd: string, radiusLg: string;
+  if (radius >= 9999) {
+    radiusSm = radiusMd = radiusLg = '9999px';
+  } else {
+    radiusSm = `${Math.round(radius * 0.5)}px`;
+    radiusMd = `${radius}px`;
+    radiusLg = `${Math.round(radius * 1.5)}px`;
+  }
+
+  const [shadowSm, shadowMd, shadowLg] = SHADOW_VALUES[elevation];
 
   return {
     radiusSm,

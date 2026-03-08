@@ -1,4 +1,4 @@
-import type { TokenConfig, RadiusPreset, ElevationLevel } from '@/types/tokens';
+import type { TokenConfig, ElevationLevel } from '@/types/tokens';
 import { DEFAULT_TOKEN_CONFIG } from './default-config';
 
 export function serializeConfig(config: TokenConfig): URLSearchParams {
@@ -12,13 +12,12 @@ export function serializeConfig(config: TokenConfig): URLSearchParams {
   params.set('bf', config.typography.bodyFamily);
   params.set('hw', String(config.typography.headingWeight));
   params.set('bw', String(config.typography.bodyWeight));
-  params.set('r', config.surface.radius);
+  params.set('r', String(config.surface.radius));
   params.set('el', config.surface.elevation);
   if (config.theme !== 'dark') params.set('th', config.theme);
   return params;
 }
 
-const VALID_RADIUS: RadiusPreset[] = ['none', 'sm', 'md', 'lg', 'full'];
 const VALID_ELEVATION: ElevationLevel[] = ['flat', 'subtle', 'elevated', 'floating'];
 const VALID_THEMES = ['light', 'dark'] as const;
 type ThemeValue = typeof VALID_THEMES[number];
@@ -26,7 +25,11 @@ type ThemeValue = typeof VALID_THEMES[number];
 export function deserializeConfig(params: URLSearchParams): TokenConfig {
   const def = DEFAULT_TOKEN_CONFIG;
 
-  const radius = params.get('r');
+  const radiusParam = params.get('r');
+  const radius: number =
+    radiusParam !== null && isFinite(Number(radiusParam)) && Number(radiusParam) >= 0
+      ? Math.round(Number(radiusParam))
+      : def.surface.radius;
   const elevation = params.get('el');
 
   const themeParam = params.get('th');
@@ -50,9 +53,7 @@ export function deserializeConfig(params: URLSearchParams): TokenConfig {
       bodyWeight:    Number(params.get('bw')) || def.typography.bodyWeight,
     },
     surface: {
-      radius:    (radius && VALID_RADIUS.includes(radius as RadiusPreset))
-        ? (radius as RadiusPreset)
-        : def.surface.radius,
+      radius,
       elevation: (elevation && VALID_ELEVATION.includes(elevation as ElevationLevel))
         ? (elevation as ElevationLevel)
         : def.surface.elevation,

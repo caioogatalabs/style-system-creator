@@ -74,7 +74,7 @@ export function SurfacePreview() {
             className="text-2xl font-semibold capitalize"
             style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-heading)' }}
           >
-            {config.surface.radius}
+            {config.surface.radius >= 9999 ? 'Full' : `${config.surface.radius}px`}
           </p>
           <div
             className="mt-4 h-8 w-8 border"

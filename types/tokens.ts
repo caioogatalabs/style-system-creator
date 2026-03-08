@@ -6,7 +6,6 @@ export interface PrimitiveColors {
   tertiary: string;
 }
 
-export type RadiusPreset = 'none' | 'sm' | 'md' | 'lg' | 'full';
 export type ElevationLevel = 'flat' | 'subtle' | 'elevated' | 'floating';
 
 export interface TypographyConfig {
@@ -22,7 +21,7 @@ export interface TokenConfig {
   colors: PrimitiveColors;
   typography: TypographyConfig;
   surface: {
-    radius: RadiusPreset;
+    radius: number;
     elevation: ElevationLevel;
   };
   spacing: { baseUnit: number };
