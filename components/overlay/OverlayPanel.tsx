@@ -46,7 +46,7 @@ export function OverlayPanel() {
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex flex-col"
-      style={{ backgroundColor: 'oklch(0.06 0 0)' }}
+      style={{ backgroundColor: 'var(--color-bg)' }}
     >
       {/* Close bar */}
       <div

@@ -131,7 +131,7 @@ export function TypographyOverlayPanel() {
           onChange={(e) => setSearch(e.target.value)}
           className="mb-4 w-full border px-4 py-2.5 text-sm outline-none"
           style={{
-            backgroundColor: 'oklch(0.10 0 0)',
+            backgroundColor: 'var(--color-bg-surface-primary)',
             borderColor: 'var(--color-border-primary)',
             color: 'var(--color-text-primary)',
             borderRadius: 'var(--radius-component-sm)',
