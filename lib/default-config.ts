@@ -23,4 +23,5 @@ export const DEFAULT_TOKEN_CONFIG: TokenConfig = {
   spacing: {
     baseUnit: 4,
   },
+  theme: 'dark',
 };

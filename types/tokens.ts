@@ -26,6 +26,7 @@ export interface TokenConfig {
     elevation: ElevationLevel;
   };
   spacing: { baseUnit: number };
+  theme: 'light' | 'dark';
 }
 
 export interface ColorStep {
@@ -82,5 +83,6 @@ export type TokenAction =
   | { type: 'SET_TYPOGRAPHY'; patch: Partial<TypographyConfig> }
   | { type: 'SET_SURFACE'; patch: Partial<TokenConfig['surface']> }
   | { type: 'SET_SPACING'; patch: Partial<TokenConfig['spacing']> }
+  | { type: 'SET_THEME'; theme: 'light' | 'dark' }
   | { type: 'LOAD_CONFIG'; config: TokenConfig }
   | { type: 'RESET' };
