@@ -2,15 +2,16 @@
 
 import { useState } from 'react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
+import { useOverlay } from '@/context/OverlayContext';
+import type { SurfaceOverlayPayload, SurfaceTab } from '@/context/OverlayContext';
 import type { ElevationLevel } from '@/types/tokens';
-import type { SurfaceTab } from '@/context/OverlayContext';
 
-const RADIUS_OPTIONS: { value: number; label: string; preview: string }[] = [
-  { value: 0, label: 'None', preview: '0px' },
-  { value: 4, label: 'Small', preview: '4px' },
-  { value: 8, label: 'Medium', preview: '8px' },
-  { value: 16, label: 'Large', preview: '16px' },
-  { value: 9999, label: 'Full', preview: '9999px' },
+const RADIUS_PRESETS: { label: string; value: number }[] = [
+  { label: 'None', value: 0 },
+  { label: 'Small', value: 4 },
+  { label: 'Med', value: 8 },
+  { label: 'Large', value: 16 },
+  { label: 'Full', value: 9999 },
 ];
 
 const ELEVATION_OPTIONS: { value: ElevationLevel; label: string; description: string }[] = [
@@ -139,7 +140,17 @@ function LivePreview({
 
 export function SurfaceOverlayPanel() {
   const { config, dispatch } = useTokenConfigContext();
-  const [activeTab, setActiveTab] = useState<SurfaceTab>('radius');
+  const { overlay, closeOverlay } = useOverlay();
+
+  const surfacePayload = overlay.payload as SurfaceOverlayPayload | undefined;
+  const [activeTab, setActiveTab] = useState<SurfaceTab>(surfacePayload?.tab ?? 'radius');
+
+  // Local draft — does NOT write to global config until Apply
+  const [localSurface, setLocalSurface] = useState({
+    radius: config.surface.radius,
+    elevation: config.surface.elevation,
+  });
+
   const [borderPresetIdx, setBorderPresetIdx] = useState(2);
   const [borderStyle, setBorderStyle] = useState<'solid' | 'dashed' | 'dotted'>('solid');
 
@@ -151,6 +162,11 @@ export function SurfaceOverlayPanel() {
   ];
 
   const currentBorderPreset = BORDER_PRESETS[borderPresetIdx];
+
+  function handleApply() {
+    dispatch({ type: 'SET_SURFACE', patch: { radius: localSurface.radius, elevation: localSurface.elevation } });
+    closeOverlay();
+  }
 
   return (
     <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 57px)' }}>
@@ -180,36 +196,64 @@ export function SurfaceOverlayPanel() {
           style={{ width: 380, borderColor: 'var(--color-border-primary)' }}
         >
           {activeTab === 'radius' && (
-            <div className="flex flex-col gap-2">
+            <div>
               <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
-                Border Radius Preset
+                Border Radius
               </p>
-              {RADIUS_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => dispatch({ type: 'SET_SURFACE', patch: { radius: opt.value } })}
-                  className="flex items-center justify-between px-4 py-3 border transition-colors"
-                  style={{
-                    borderColor:
-                      config.surface.radius === opt.value
-                        ? 'var(--color-bg-fill-primary)'
-                        : 'var(--color-border-primary)',
-                    borderRadius: 'var(--radius-component-sm)',
-                    backgroundColor:
-                      config.surface.radius === opt.value
-                        ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
-                        : 'transparent',
-                  }}
-                >
-                  <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
+
+              {/* Chip presets */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {RADIUS_PRESETS.map((opt) => (
+                  <button
+                    key={opt.label}
+                    type="button"
+                    onClick={() => setLocalSurface((s) => ({ ...s, radius: opt.value }))}
+                    className="px-4 py-2 text-sm border transition-colors"
+                    style={{
+                      borderColor:
+                        localSurface.radius === opt.value
+                          ? 'var(--color-bg-fill-primary)'
+                          : 'var(--color-border-primary)',
+                      color:
+                        localSurface.radius === opt.value
+                          ? 'var(--color-bg-fill-primary)'
+                          : 'var(--color-text-secondary)',
+                      borderRadius: 'var(--radius-component-sm)',
+                      backgroundColor:
+                        localSurface.radius === opt.value
+                          ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
+                          : 'transparent',
+                    }}
+                  >
                     {opt.label}
-                  </span>
-                  <span className="font-mono text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-                    {opt.preview}
-                  </span>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
+
+              {/* Slider — hidden when Full (9999) */}
+              {localSurface.radius < 9999 && (
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+                      Custom
+                    </p>
+                    <span className="font-mono text-xs" style={{ color: 'var(--color-text-primary)' }}>
+                      {localSurface.radius}px
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={32}
+                    step={1}
+                    value={localSurface.radius}
+                    onChange={(e) =>
+                      setLocalSurface((s) => ({ ...s, radius: Number(e.target.value) }))
+                    }
+                    className="w-full"
+                  />
+                </div>
+              )}
             </div>
           )}
 
@@ -222,16 +266,16 @@ export function SurfaceOverlayPanel() {
                 <button
                   key={opt.value}
                   type="button"
-                  onClick={() => dispatch({ type: 'SET_SURFACE', patch: { elevation: opt.value } })}
+                  onClick={() => setLocalSurface((s) => ({ ...s, elevation: opt.value }))}
                   className="flex flex-col items-start px-4 py-3 border transition-colors text-left"
                   style={{
                     borderColor:
-                      config.surface.elevation === opt.value
+                      localSurface.elevation === opt.value
                         ? 'var(--color-bg-fill-primary)'
                         : 'var(--color-border-primary)',
                     borderRadius: 'var(--radius-component-sm)',
                     backgroundColor:
-                      config.surface.elevation === opt.value
+                      localSurface.elevation === opt.value
                         ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
                         : 'transparent',
                   }}
@@ -337,7 +381,7 @@ export function SurfaceOverlayPanel() {
                   <button
                     key={opt.value}
                     type="button"
-                    className="flex items-center justify-between px-4 py-3 border text-left transition-colors hover:border-primary"
+                    className="flex items-center justify-between px-4 py-3 border text-left transition-colors"
                     style={{
                       borderColor: 'var(--color-border-primary)',
                       borderRadius: 'var(--radius-component-sm)',
@@ -372,6 +416,33 @@ export function SurfaceOverlayPanel() {
             />
           </div>
         </div>
+      </div>
+
+      {/* Footer: Apply / Cancel */}
+      <div
+        className="flex items-center justify-between border-t px-8 py-4 shrink-0"
+        style={{ borderColor: 'var(--color-border-primary)' }}
+      >
+        <button
+          type="button"
+          onClick={closeOverlay}
+          className="px-6 py-2 text-xs tracking-[0.1em] uppercase transition-colors"
+          style={{ color: 'var(--color-text-secondary)' }}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          onClick={handleApply}
+          className="px-6 py-2 text-xs tracking-[0.1em] uppercase"
+          style={{
+            backgroundColor: 'var(--color-bg-fill-primary)',
+            color: 'var(--color-text-inverse)',
+            borderRadius: 'var(--radius-component-sm)',
+          }}
+        >
+          Apply →
+        </button>
       </div>
     </div>
   );
