@@ -11,8 +11,8 @@ export function SurfacePreview() {
     <section
       role="button"
       tabIndex={0}
-      onClick={() => openOverlay('surface')}
-      onKeyDown={(e) => e.key === 'Enter' && openOverlay('surface')}
+      onClick={() => openOverlay('surface', { tab: 'radius' })}
+      onKeyDown={(e) => e.key === 'Enter' && openOverlay('surface', { tab: 'radius' })}
       className="px-6 py-16 cursor-pointer group"
       style={{
         borderColor: 'var(--color-border-primary)',

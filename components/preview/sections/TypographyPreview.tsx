@@ -70,8 +70,8 @@ export function TypographyPreview() {
       <div
         role="button"
         tabIndex={0}
-        onClick={() => openOverlay('typography')}
-        onKeyDown={(e) => e.key === 'Enter' && openOverlay('typography')}
+        onClick={() => openOverlay('typography', { target: 'heading' })}
+        onKeyDown={(e) => e.key === 'Enter' && openOverlay('typography', { target: 'heading' })}
         className="grid border-b py-10 cursor-pointer group relative"
         style={{
           gridTemplateColumns: '1fr 1fr 1fr',
@@ -146,8 +146,8 @@ export function TypographyPreview() {
       <div
         role="button"
         tabIndex={0}
-        onClick={() => openOverlay('typography')}
-        onKeyDown={(e) => e.key === 'Enter' && openOverlay('typography')}
+        onClick={() => openOverlay('typography', { target: 'body' })}
+        onKeyDown={(e) => e.key === 'Enter' && openOverlay('typography', { target: 'body' })}
         className="grid border-b py-10 cursor-pointer group relative"
         style={{
           gridTemplateColumns: '1fr 1fr 1fr',
