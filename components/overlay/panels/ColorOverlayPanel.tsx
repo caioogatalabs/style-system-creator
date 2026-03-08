@@ -64,8 +64,8 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
   function handleApply() {
     if (!error) {
       dispatch({ type: 'SET_COLOR', key: colorKey, value: hex });
+      closeOverlay();
     }
-    closeOverlay();
   }
 
   const meta = COLOR_META[colorKey];
@@ -136,14 +136,14 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
               className="flex-1 border px-4 py-2.5 font-mono text-sm outline-none"
               style={{
                 backgroundColor: 'oklch(0 0 0 / 0.25)',
-                borderColor: error ? 'var(--color-error)' : `oklch(1 0 0 / 0.25)`,
+                borderColor: error ? 'var(--color-text-danger)' : `oklch(1 0 0 / 0.25)`,
                 color: contrastColor,
                 borderRadius: 'var(--radius-component-sm)',
               }}
             />
           </div>
           {error && (
-            <p className="mt-2 text-xs" style={{ color: 'var(--color-error)' }}>
+            <p className="mt-2 text-xs" style={{ color: 'var(--color-text-danger)' }}>
               Invalid hex color
             </p>
           )}
