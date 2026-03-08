@@ -4,6 +4,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { useOverlay } from '@/context/OverlayContext';
+import type { ColorOverlayPayload } from '@/context/OverlayContext';
 import { TypographyOverlayPanel } from './panels/TypographyOverlayPanel';
 import { ColorOverlayPanel } from './panels/ColorOverlayPanel';
 import { SurfaceOverlayPanel } from './panels/SurfaceOverlayPanel';
@@ -74,7 +75,7 @@ export function OverlayPanel() {
       <div className="flex-1 overflow-auto">
         {overlay.type === 'typography' && <TypographyOverlayPanel />}
         {overlay.type === 'color' && overlay.payload && (
-          <ColorOverlayPanel colorKey={overlay.payload.colorKey} />
+          <ColorOverlayPanel colorKey={(overlay.payload as ColorOverlayPayload).colorKey} />
         )}
         {overlay.type === 'surface' && <SurfaceOverlayPanel />}
       </div>
