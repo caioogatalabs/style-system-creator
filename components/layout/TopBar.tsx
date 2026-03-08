@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Share2 } from 'lucide-react';
-import { useTokenConfig } from '@/hooks/useTokenConfig';
+import { Share2, Sun, Moon } from 'lucide-react';
+import { useTokenConfigContext } from '@/context/TokenConfigContext';
 import { serializeConfig } from '@/lib/url-serializer';
 
 const NAV_ITEMS = [
@@ -15,14 +15,16 @@ const NAV_ITEMS = [
 
 export function TopBar() {
   const pathname = usePathname();
-  const config = useTokenConfig();
+  const { config, dispatch } = useTokenConfigContext();
 
   function handleShare() {
     const params = serializeConfig(config);
     const url = `${window.location.origin}/?${params.toString()}`;
-    navigator.clipboard.writeText(url).then(() => {
-      // Could show a toast here
-    });
+    navigator.clipboard.writeText(url);
+  }
+
+  function handleToggleTheme() {
+    dispatch({ type: 'SET_THEME', theme: config.theme === 'dark' ? 'light' : 'dark' });
   }
 
   return (
@@ -79,6 +81,26 @@ export function TopBar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {/* Theme toggle */}
+          <button
+            onClick={handleToggleTheme}
+            className="flex items-center justify-center rounded p-1.5 transition-colors"
+            style={{
+              color: 'var(--color-text-secondary)',
+              border: '1px solid var(--color-border-primary)',
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-secondary)';
+            }}
+            title={config.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {config.theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
+
+          {/* Share */}
           <button
             onClick={handleShare}
             className="flex items-center gap-2 rounded px-3 py-1.5 text-xs tracking-[0.08em] uppercase transition-colors"
