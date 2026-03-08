@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
 import type { ElevationLevel } from '@/types/tokens';
-
-type SurfaceTab = 'radius' | 'elevation' | 'borders' | 'card';
+import type { SurfaceTab } from '@/context/OverlayContext';
 
 const RADIUS_OPTIONS: { value: number; label: string; preview: string }[] = [
   { value: 0, label: 'None', preview: '0px' },

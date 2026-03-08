@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
 import { preloadAllFonts } from '@/lib/font-loader';
+import type { FontTarget } from '@/context/OverlayContext';
 
 const FONT_LIST = [
   // Sans Serif
@@ -24,8 +25,6 @@ const SCALE_RATIOS = [
   { label: 'Perfect Fourth', value: 1.333 },
   { label: 'Golden Ratio', value: 1.618 },
 ];
-
-type FontTarget = 'heading' | 'body';
 
 export function TypographyOverlayPanel() {
   const { config, dispatch } = useTokenConfigContext();
