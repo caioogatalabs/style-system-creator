@@ -79,32 +79,39 @@
   --sidebar-ring: oklch(0.55 0.22 264);
 
   /* ── Our token system seeds (JS overwrites these at runtime) ── */
-  --color-bg:                  oklch(0.99 0 0);
-  --color-bg-surface-primary:  oklch(0.96 0 0);
+  --color-surface:        oklch(0.99 0 0);
+  --color-surface-raised: oklch(0.96 0 0);
 
-  --color-text-primary:        oklch(0.10 0.005 264);
-  --color-text-secondary:      oklch(0.45 0.005 264);
-  --color-text-tertiary:       oklch(0.55 0 0);
-  --color-text-inverse:        oklch(0.97 0.01 264);
+  --color-text:       oklch(0.10 0.005 264);
+  --color-text-muted: oklch(0.45 0.005 264);
+  --color-text-dim:   oklch(0.55 0 0);
 
-  --color-bg-fill-primary:         oklch(0.55 0.22 264);
-  --color-bg-fill-primary-hover:   oklch(0.47 0.20 264);
-  --color-bg-fill-primary-active:  oklch(0.40 0.18 264);
-  --color-bg-fill-secondary:       oklch(0.55 0 0);
-  --color-bg-fill-secondary-hover: oklch(0.50 0 0);
-  --color-bg-fill-accent:          oklch(0.70 0.18 85);
-  --color-bg-fill-accent-hover:    oklch(0.62 0.18 85);
+  --color-primary:        oklch(0.55 0.22 264);
+  --color-primary-hover:  oklch(0.47 0.20 264);
+  --color-primary-active: oklch(0.40 0.18 264);
+  --color-primary-text:   oklch(0.40 0.18 264);
+  --color-on-primary:     oklch(0.97 0.01 264);
 
-  --color-border-primary:   oklch(0.88 0 0);
-  --color-border-secondary: oklch(0.82 0 0);
+  --color-secondary:       oklch(0.55 0 0);
+  --color-secondary-hover: oklch(0.50 0 0);
+  --color-secondary-text:  oklch(0.50 0 0);
+  --color-on-secondary:    oklch(0.97 0 0);
 
-  --color-text-danger:     oklch(0.58 0.22 27);
-  --color-bg-fill-danger:  oklch(0.58 0.22 27 / 0.10);
-  --color-text-warning:    oklch(0.78 0.18 85);
-  --color-bg-fill-warning: oklch(0.78 0.18 85 / 0.10);
-  --color-text-success:    oklch(0.60 0.18 150);
-  --color-bg-fill-success: oklch(0.60 0.18 150 / 0.10);
-  --color-text-info:       oklch(0.60 0.18 234);
+  --color-accent:       oklch(0.70 0.18 85);
+  --color-accent-hover: oklch(0.62 0.18 85);
+  --color-accent-text:  oklch(0.62 0.18 85);
+  --color-on-accent:    oklch(0.97 0 0);
+
+  --color-border:       oklch(0.88 0 0);
+  --color-border-muted: oklch(0.82 0 0);
+
+  --color-danger:       oklch(0.58 0.22 27);
+  --color-danger-muted: oklch(0.58 0.22 27 / 0.10);
+  --color-warning:       oklch(0.78 0.18 85);
+  --color-warning-muted: oklch(0.78 0.18 85 / 0.10);
+  --color-success:       oklch(0.60 0.18 150);
+  --color-success-muted: oklch(0.60 0.18 150 / 0.10);
+  --color-info:          oklch(0.60 0.18 234);
 
   --font-heading:        "Playfair Display", serif;
   --font-body:           "Inter", sans-serif;
@@ -122,14 +129,14 @@
   --text-bodySm:  12.80px;
   --text-caption: 10.24px;
 
-  --radius-component-sm:   4px;
-  --radius-component-md:   8px;
-  --radius-component-lg:   12px;
-  --radius-component-full: 9999px;
+  --radius-1:    4px;
+  --radius-2:    8px;
+  --radius-3:    12px;
+  --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.08);
-  --shadow-md: 0 4px 8px oklch(0 0 0 / 0.08);
-  --shadow-lg: 0 8px 24px oklch(0 0 0 / 0.08);
+  --shadow-1: 0 1px 3px oklch(0 0 0 / 0.08);
+  --shadow-2: 0 4px 8px oklch(0 0 0 / 0.08);
+  --shadow-3: 0 8px 24px oklch(0 0 0 / 0.08);
 }
 
 /* ── Dark theme overrides ── */
@@ -161,35 +168,42 @@
   --sidebar-border: oklch(0.20 0 0);
   --sidebar-ring: oklch(0.55 0.22 264);
 
-  --color-bg:                  oklch(0.08 0 0);
-  --color-bg-surface-primary:  oklch(0.12 0 0);
+  --color-surface:        oklch(0.08 0 0);
+  --color-surface-raised: oklch(0.12 0 0);
 
-  --color-text-primary:        oklch(0.96 0.005 264);
-  --color-text-secondary:      oklch(0.55 0.005 264);
-  --color-text-tertiary:       oklch(0.35 0 0);
-  --color-text-inverse:        oklch(0.97 0.01 264);
+  --color-text:       oklch(0.96 0.005 264);
+  --color-text-muted: oklch(0.55 0.005 264);
+  --color-text-dim:   oklch(0.35 0 0);
 
-  --color-bg-fill-primary:         oklch(0.55 0.22 264);
-  --color-bg-fill-primary-hover:   oklch(0.47 0.20 264);
-  --color-bg-fill-primary-active:  oklch(0.40 0.18 264);
-  --color-bg-fill-secondary:       oklch(0.15 0 0);
-  --color-bg-fill-secondary-hover: oklch(0.20 0 0);
-  --color-bg-fill-accent:          oklch(0.70 0.18 85);
-  --color-bg-fill-accent-hover:    oklch(0.62 0.18 85);
+  --color-primary:        oklch(0.55 0.22 264);
+  --color-primary-hover:  oklch(0.47 0.20 264);
+  --color-primary-active: oklch(0.40 0.18 264);
+  --color-primary-text:   oklch(0.40 0.18 264);
+  --color-on-primary:     oklch(0.97 0.01 264);
 
-  --color-border-primary:   oklch(0.20 0 0);
-  --color-border-secondary: oklch(0.30 0 0);
+  --color-secondary:       oklch(0.15 0 0);
+  --color-secondary-hover: oklch(0.20 0 0);
+  --color-secondary-text:  oklch(0.20 0 0);
+  --color-on-secondary:    oklch(0.97 0 0);
+
+  --color-accent:       oklch(0.70 0.18 85);
+  --color-accent-hover: oklch(0.62 0.18 85);
+  --color-accent-text:  oklch(0.62 0.18 85);
+  --color-on-accent:    oklch(0.97 0 0);
+
+  --color-border:       oklch(0.20 0 0);
+  --color-border-muted: oklch(0.30 0 0);
 }
 
 /* ── Base styles ── */
 @layer base {
   * {
     box-sizing: border-box;
-    border-color: var(--color-border-primary);
+    border-color: var(--color-border);
   }
   body {
-    background-color: var(--color-bg);
-    color: var(--color-text-primary);
+    background-color: var(--color-surface);
+    color: var(--color-text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

@@ -33,6 +33,11 @@ function tokenReducer(state: TokenConfig, action: TokenAction): TokenConfig {
         ...state,
         spacing: { ...state.spacing, ...action.patch },
       };
+    case 'SET_LIGHTNESS_RANGE':
+      return {
+        ...state,
+        lightnessRange: { ...state.lightnessRange, ...action.patch },
+      };
     case 'SET_THEME':
       return { ...state, theme: action.theme };
     case 'LOAD_CONFIG':

@@ -31,8 +31,8 @@ export function TopBar() {
     <header
       className="sticky top-0 z-50 w-full border-b"
       style={{
-        backgroundColor: 'var(--color-bg)',
-        borderColor: 'var(--color-border-primary)',
+        backgroundColor: 'var(--color-surface)',
+        borderColor: 'var(--color-border)',
       }}
     >
       <div className="flex h-14 w-full items-center justify-between px-8">
@@ -40,14 +40,14 @@ export function TopBar() {
         <div className="flex items-center gap-3">
           <span
             className="text-xs font-mono tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-muted)' }}
           >
             Style System
           </span>
-          <span style={{ color: 'var(--color-border-primary)' }}>·</span>
+          <span style={{ color: 'var(--color-border)' }}>·</span>
           <span
             className="text-xs font-mono tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-primary)' }}
+            style={{ color: 'var(--color-text)' }}
           >
             Creator
           </span>
@@ -63,7 +63,7 @@ export function TopBar() {
                 href={href}
                 className="relative px-4 py-2 text-xs tracking-[0.12em] uppercase transition-colors duration-150"
                 style={{
-                  color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                  color: isActive ? 'var(--color-text)' : 'var(--color-text-muted)',
                   fontFamily: 'var(--font-body)',
                 }}
               >
@@ -71,7 +71,7 @@ export function TopBar() {
                 {isActive && (
                   <span
                     className="absolute bottom-0 left-4 right-4 h-px"
-                    style={{ backgroundColor: 'var(--color-text-primary)' }}
+                    style={{ backgroundColor: 'var(--color-text)' }}
                   />
                 )}
               </Link>
@@ -86,14 +86,14 @@ export function TopBar() {
             onClick={handleToggleTheme}
             className="flex items-center justify-center rounded p-1.5 transition-colors"
             style={{
-              color: 'var(--color-text-secondary)',
-              border: '1px solid var(--color-border-primary)',
+              color: 'var(--color-text-muted)',
+              border: '1px solid var(--color-border)',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)';
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-secondary)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)';
             }}
             title={config.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
@@ -105,14 +105,14 @@ export function TopBar() {
             onClick={handleShare}
             className="flex items-center gap-2 rounded px-3 py-1.5 text-xs tracking-[0.08em] uppercase transition-colors"
             style={{
-              color: 'var(--color-text-secondary)',
-              border: '1px solid var(--color-border-primary)',
+              color: 'var(--color-text-muted)',
+              border: '1px solid var(--color-border)',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)';
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-secondary)';
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)';
             }}
           >
             <Share2 size={12} />

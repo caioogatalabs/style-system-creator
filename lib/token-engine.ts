@@ -9,25 +9,27 @@ import type {
   SurfaceTokens,
   ResolvedTokens,
   ElevationLevel,
+  LightnessRange,
 } from '@/types/tokens';
 
 // ─── Color Scale ────────────────────────────────────────────────────────────
 
-const SCALE_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
+export const SCALE_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
 
-// Target lightness for each step
-const LIGHTNESS_MAP: Record<number, number> = {
-  50: 0.975,
-  100: 0.950,
-  200: 0.900,
-  300: 0.820,
-  400: 0.720,
-  500: 0.620,
-  600: 0.520,
-  700: 0.430,
-  800: 0.340,
-  900: 0.250,
-  950: 0.180,
+// Default lightness distribution (normalized 0-1, where 0 = darkest, 1 = lightest)
+// These ratios are interpolated between lightnessRange.min and lightnessRange.max
+const LIGHTNESS_RATIOS: Record<number, number> = {
+  50: 1.000,
+  100: 0.969,
+  200: 0.906,
+  300: 0.806,
+  400: 0.680,
+  500: 0.554,
+  600: 0.428,
+  700: 0.315,
+  800: 0.201,
+  900: 0.088,
+  950: 0.000,
 };
 
 // Chroma multiplier per step (reduces at extremes)
@@ -45,13 +47,18 @@ const CHROMA_MAP: Record<number, number> = {
   950: 0.40,
 };
 
-export function generateColorScale(seedHex: string): ColorScale {
-  const { l: seedL, c: seedC, h: seedH } = hexToOklch(seedHex);
-  // Find which step the seed color is closest to
+const DEFAULT_LIGHTNESS_RANGE: LightnessRange = { min: 0.05, max: 0.98 };
+
+export function generateColorScale(
+  seedHex: string,
+  lightnessRange: LightnessRange = DEFAULT_LIGHTNESS_RANGE,
+): ColorScale {
+  const { c: seedC, h: seedH } = hexToOklch(seedHex);
   const maxChroma = Math.max(seedC, 0.05);
+  const { min, max } = lightnessRange;
 
   return SCALE_STEPS.map((step) => {
-    const l = LIGHTNESS_MAP[step];
+    const l = min + LIGHTNESS_RATIOS[step] * (max - min);
     const c = maxChroma * CHROMA_MAP[step];
     const h = seedH;
 
@@ -67,13 +74,15 @@ export function generateColorScale(seedHex: string): ColorScale {
   });
 }
 
-export function generateAllColorScales(colors: TokenConfig['colors']): ResolvedColorScales {
+export function generateAllColorScales(
+  colors: TokenConfig['colors'],
+  lightnessRange: LightnessRange = DEFAULT_LIGHTNESS_RANGE,
+): ResolvedColorScales {
   return {
-    primary: generateColorScale(colors.primary),
-    secondary: generateColorScale(colors.secondary),
-    accent: generateColorScale(colors.accent),
-    neutral: generateColorScale(colors.neutral),
-    tertiary: generateColorScale(colors.tertiary),
+    primary: generateColorScale(colors.primary, lightnessRange),
+    secondary: generateColorScale(colors.secondary, lightnessRange),
+    accent: generateColorScale(colors.accent, lightnessRange),
+    neutral: generateColorScale(colors.neutral, lightnessRange),
   };
 }
 
@@ -153,25 +162,25 @@ const SHADOW_VALUES: Record<ElevationLevel, [sm: string, md: string, lg: string]
 export function resolveSurfaceTokens(surface: TokenConfig['surface']): SurfaceTokens {
   const { radius, elevation } = surface;
 
-  let radiusSm: string, radiusMd: string, radiusLg: string;
+  let radius1: string, radius2: string, radius3: string;
   if (radius >= 9999) {
-    radiusSm = radiusMd = radiusLg = '9999px';
+    radius1 = radius2 = radius3 = '9999px';
   } else {
-    radiusSm = `${Math.round(radius * 0.5)}px`;
-    radiusMd = `${radius}px`;
-    radiusLg = `${Math.round(radius * 1.5)}px`;
+    radius1 = `${Math.round(radius * 0.5)}px`;
+    radius2 = `${radius}px`;
+    radius3 = `${Math.round(radius * 1.5)}px`;
   }
 
-  const [shadowSm, shadowMd, shadowLg] = SHADOW_VALUES[elevation];
+  const [shadow1, shadow2, shadow3] = SHADOW_VALUES[elevation];
 
   return {
-    radiusSm,
-    radiusMd,
-    radiusLg,
+    radius1,
+    radius2,
+    radius3,
     radiusFull: '9999px',
-    shadowSm,
-    shadowMd,
-    shadowLg,
+    shadow1,
+    shadow2,
+    shadow3,
   };
 }
 
@@ -179,7 +188,7 @@ export function resolveSurfaceTokens(surface: TokenConfig['surface']): SurfaceTo
 
 export function resolveTokens(config: TokenConfig): ResolvedTokens {
   return {
-    colorScales: generateAllColorScales(config.colors),
+    colorScales: generateAllColorScales(config.colors, config.lightnessRange),
     semanticColors: deriveSemanticColors(config.colors.primary),
     typography: generateTypeScale(config.typography.baseSize, config.typography.scaleRatio),
     spacing: generateSpacingScale(config.spacing.baseUnit),

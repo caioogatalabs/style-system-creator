@@ -1,24 +1,38 @@
 import type { ResolvedTokens, TokenConfig } from '@/types/tokens';
-import { hexToOklch } from './color-utils';
 
-const THEME_L = {
+/**
+ * Scale-step index mapping for theme inversion.
+ * Symmetric mirroring around step 500 (index 5).
+ * Dark mode pulls toward lighter steps; light mode pulls toward darker steps.
+ *
+ * Index → Step: 0=50, 1=100, 2=200, 3=300, 4=400, 5=500, 6=600, 7=700, 8=800, 9=900, 10=950
+ */
+const STEP_MAP = {
   dark: {
-    bg: 0.08,
-    surface: 0.12,
-    textPrimary: 0.95,
-    textSecondary: 0.55,
-    textTertiary: 0.35,
-    border: 0.20,
-    borderSub: 0.30,
+    // Per-color fills (primary, secondary, accent)
+    fill: 5,      // step 500 (seed)
+    hover: 4,     // step 400
+    active: 3,    // step 300
+    text: 3,      // step 300 (colored text — links, labels)
+    on: 10,       // step 950 (text on fill)
+    // Neutral-derived
+    surface: 10,       // step 950
+    surface_raised: 9, // step 900
+    text_body: 1,      // step 100
+    text_muted: 4,     // step 400
+    text_dim: 8,       // step 800
+    border: 7,         // step 700
+    border_muted: 8,   // step 800
   },
   light: {
-    bg: 0.99,
-    surface: 0.96,
-    textPrimary: 0.10,
-    textSecondary: 0.45,
-    textTertiary: 0.55,
-    border: 0.88,
-    borderSub: 0.82,
+    fill: 5, hover: 6, active: 7, text: 7, on: 0,
+    surface: 0,        // step 50
+    surface_raised: 1, // step 100
+    text_body: 9,      // step 900
+    text_muted: 6,     // step 600
+    text_dim: 2,       // step 200
+    border: 3,         // step 300
+    border_muted: 2,   // step 200
   },
 } as const;
 
@@ -35,62 +49,59 @@ export function computeTokenVars(
   const vars: Record<string, string> = {};
 
   // ── Color scales (primitives) ──────────────────────────────────────────────
-  const colorNames = ['primary', 'secondary', 'accent', 'neutral', 'tertiary'] as const;
+  const colorNames = ['primary', 'secondary', 'accent', 'neutral'] as const;
   colorNames.forEach((name) => {
     colorScales[name].forEach(({ step, oklch }) => {
       vars[`--color-${name}-${step}`] = oklch;
     });
   });
 
-  // ── Derive hue/chroma from primitives ──────────────────────────────────────
-  const { h: neutralH, c: neutralC } = hexToOklch(config.colors.neutral);
-  const { h: secondaryH, c: secondaryC } = hexToOklch(config.colors.secondary);
-  const { h: primaryH } = hexToOklch(config.colors.primary);
-  const { h: tertiaryH, c: tertiaryC } = hexToOklch(config.colors.tertiary);
-
-  const bgChroma       = Math.min(neutralC   * 0.30, 0.008);
-  const fgChroma       = Math.min(secondaryC * 0.08, 0.012);
-  const fgMutedChroma  = Math.min(secondaryC * 0.10, 0.015);
-  const borderChroma   = Math.min(neutralC   * 0.40, 0.010);
-  const tertiaryChroma = Math.min(tertiaryC  * 0.20, 0.020);
-
   const p = colorScales.primary;
   const s = colorScales.secondary;
   const a = colorScales.accent;
+  const n = colorScales.neutral;
+  const m = STEP_MAP[config.theme];
 
-  const l = THEME_L[config.theme];
+  // ── Surfaces (from neutral scale) ─────────────────────────────────────────
+  vars['--color-surface']        = n[m.surface].oklch;
+  vars['--color-surface-raised'] = n[m.surface_raised].oklch;
 
-  // ── Backgrounds ───────────────────────────────────────────────────────────
-  vars['--color-bg']                 = `oklch(${l.bg} ${bgChroma.toFixed(4)} ${neutralH.toFixed(1)})`;
-  vars['--color-bg-surface-primary'] = `oklch(${l.surface} ${bgChroma.toFixed(4)} ${neutralH.toFixed(1)})`;
+  // ── Text (from neutral scale) ─────────────────────────────────────────────
+  vars['--color-text']       = n[m.text_body].oklch;
+  vars['--color-text-muted'] = n[m.text_muted].oklch;
+  vars['--color-text-dim']   = n[m.text_dim].oklch;
 
-  // ── Text ──────────────────────────────────────────────────────────────────
-  vars['--color-text-primary']   = `oklch(${l.textPrimary} ${fgChroma.toFixed(4)} ${secondaryH.toFixed(1)})`;
-  vars['--color-text-secondary'] = `oklch(${l.textSecondary} ${fgMutedChroma.toFixed(4)} ${secondaryH.toFixed(1)})`;
-  vars['--color-text-tertiary']  = `oklch(${l.textTertiary} ${tertiaryChroma.toFixed(4)} ${tertiaryH.toFixed(1)})`;
-  vars['--color-text-inverse']   = `oklch(0.97 0.01 ${primaryH.toFixed(1)})`;
+  // ── Primary fills & text ──────────────────────────────────────────────────
+  vars['--color-primary']        = p[m.fill].oklch;
+  vars['--color-primary-hover']  = p[m.hover].oklch;
+  vars['--color-primary-active'] = p[m.active].oklch;
+  vars['--color-primary-text']   = p[m.text].oklch;
+  vars['--color-on-primary']     = p[m.on].oklch;
 
-  // ── Fills (interactive elements) ──────────────────────────────────────────
-  vars['--color-bg-fill-primary']         = config.colors.primary;
-  vars['--color-bg-fill-primary-hover']   = p[6].oklch;
-  vars['--color-bg-fill-primary-active']  = p[7].oklch;
-  vars['--color-bg-fill-secondary']       = s[5].oklch;
-  vars['--color-bg-fill-secondary-hover'] = s[6].oklch;
-  vars['--color-bg-fill-accent']          = a[5].oklch;
-  vars['--color-bg-fill-accent-hover']    = a[6].oklch;
+  // ── Secondary fills & text ────────────────────────────────────────────────
+  vars['--color-secondary']       = s[m.fill].oklch;
+  vars['--color-secondary-hover'] = s[m.hover].oklch;
+  vars['--color-secondary-text']  = s[m.text].oklch;
+  vars['--color-on-secondary']    = s[m.on].oklch;
 
-  // ── Borders ───────────────────────────────────────────────────────────────
-  vars['--color-border-primary']   = `oklch(${l.border} ${borderChroma.toFixed(4)} ${neutralH.toFixed(1)})`;
-  vars['--color-border-secondary'] = `oklch(${l.borderSub} ${borderChroma.toFixed(4)} ${neutralH.toFixed(1)})`;
+  // ── Accent fills & text ───────────────────────────────────────────────────
+  vars['--color-accent']       = a[m.fill].oklch;
+  vars['--color-accent-hover'] = a[m.hover].oklch;
+  vars['--color-accent-text']  = a[m.text].oklch;
+  vars['--color-on-accent']    = a[m.on].oklch;
 
-  // ── State fills ───────────────────────────────────────────────────────────
-  vars['--color-text-danger']     = semanticColors.error;
-  vars['--color-bg-fill-danger']  = `oklch(from ${semanticColors.error} l c h / 0.1)`;
-  vars['--color-text-warning']    = semanticColors.warning;
-  vars['--color-bg-fill-warning'] = `oklch(from ${semanticColors.warning} l c h / 0.1)`;
-  vars['--color-text-success']    = semanticColors.success;
-  vars['--color-bg-fill-success'] = `oklch(from ${semanticColors.success} l c h / 0.1)`;
-  vars['--color-text-info']       = semanticColors.info;
+  // ── Borders (from neutral scale) ──────────────────────────────────────────
+  vars['--color-border']       = n[m.border].oklch;
+  vars['--color-border-muted'] = n[m.border_muted].oklch;
+
+  // ── Status ────────────────────────────────────────────────────────────────
+  vars['--color-danger']       = semanticColors.error;
+  vars['--color-danger-muted'] = `oklch(from ${semanticColors.error} l c h / 0.1)`;
+  vars['--color-warning']       = semanticColors.warning;
+  vars['--color-warning-muted'] = `oklch(from ${semanticColors.warning} l c h / 0.1)`;
+  vars['--color-success']       = semanticColors.success;
+  vars['--color-success-muted'] = `oklch(from ${semanticColors.success} l c h / 0.1)`;
+  vars['--color-info']          = semanticColors.info;
 
   // ── Typography ────────────────────────────────────────────────────────────
   vars['--font-heading']        = `"${config.typography.headingFamily}", sans-serif`;
@@ -108,35 +119,33 @@ export function computeTokenVars(
   });
 
   // ── Surface ───────────────────────────────────────────────────────────────
-  vars['--radius-component-sm']   = surface.radiusSm;
-  vars['--radius-component-md']   = surface.radiusMd;
-  vars['--radius-component-lg']   = surface.radiusLg;
-  vars['--radius-component-full'] = surface.radiusFull;
-  vars['--shadow-sm']             = surface.shadowSm;
-  vars['--shadow-md']             = surface.shadowMd;
-  vars['--shadow-lg']             = surface.shadowLg;
+  vars['--radius-1']    = surface.radius1;
+  vars['--radius-2']    = surface.radius2;
+  vars['--radius-3']    = surface.radius3;
+  vars['--radius-full'] = surface.radiusFull;
+  vars['--shadow-1']    = surface.shadow1;
+  vars['--shadow-2']    = surface.shadow2;
+  vars['--shadow-3']    = surface.shadow3;
 
   // ── shadcn Bridge ─────────────────────────────────────────────────────────
-  // Maps our semantic tokens → shadcn CSS var names so all base-ui components
-  // are automatically live-reactive. These override the static values in globals.css.
-  vars['--background']           = vars['--color-bg'];
-  vars['--foreground']           = vars['--color-text-primary'];
-  vars['--primary']              = vars['--color-bg-fill-primary'];
-  vars['--primary-foreground']   = vars['--color-text-inverse'];
-  vars['--secondary']            = vars['--color-bg-surface-primary'];
-  vars['--secondary-foreground'] = vars['--color-text-primary'];
-  vars['--muted']                = vars['--color-bg-surface-primary'];
-  vars['--muted-foreground']     = vars['--color-text-secondary'];
-  vars['--accent']               = vars['--color-bg-surface-primary']; // subtle for ghost hover UX
-  vars['--accent-foreground']    = vars['--color-text-primary'];
-  vars['--border']               = vars['--color-border-primary'];
-  vars['--input']                = vars['--color-border-secondary'];
-  vars['--ring']                 = vars['--color-bg-fill-primary'];
+  vars['--background']           = vars['--color-surface'];
+  vars['--foreground']           = vars['--color-text'];
+  vars['--primary']              = vars['--color-primary'];
+  vars['--primary-foreground']   = vars['--color-on-primary'];
+  vars['--secondary']            = vars['--color-surface-raised'];
+  vars['--secondary-foreground'] = vars['--color-text'];
+  vars['--muted']                = vars['--color-surface-raised'];
+  vars['--muted-foreground']     = vars['--color-text-muted'];
+  vars['--accent']               = vars['--color-surface-raised'];
+  vars['--accent-foreground']    = vars['--color-text'];
+  vars['--border']               = vars['--color-border'];
+  vars['--input']                = vars['--color-border-muted'];
+  vars['--ring']                 = vars['--color-primary'];
   vars['--destructive']          = semanticColors.error;
-  vars['--card']                 = vars['--color-bg-surface-primary'];
-  vars['--card-foreground']      = vars['--color-text-primary'];
-  vars['--popover']              = vars['--color-bg-surface-primary'];
-  vars['--popover-foreground']   = vars['--color-text-primary'];
+  vars['--card']                 = vars['--color-surface-raised'];
+  vars['--card-foreground']      = vars['--color-text'];
+  vars['--popover']              = vars['--color-surface-raised'];
+  vars['--popover-foreground']   = vars['--color-text'];
 
   return vars;
 }

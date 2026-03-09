@@ -7,13 +7,14 @@ export function serializeConfig(config: TokenConfig): URLSearchParams {
   params.set('s', config.colors.secondary);
   params.set('a', config.colors.accent);
   params.set('n', config.colors.neutral);
-  params.set('t', config.colors.tertiary);
   params.set('hf', config.typography.headingFamily);
   params.set('bf', config.typography.bodyFamily);
   params.set('hw', String(config.typography.headingWeight));
   params.set('bw', String(config.typography.bodyWeight));
   params.set('r', String(config.surface.radius));
   params.set('el', config.surface.elevation);
+  params.set('lmin', String(config.lightnessRange.min));
+  params.set('lmax', String(config.lightnessRange.max));
   if (config.theme !== 'dark') params.set('th', config.theme);
   return params;
 }
@@ -37,14 +38,19 @@ export function deserializeConfig(params: URLSearchParams): TokenConfig {
     ? (themeParam as ThemeValue)
     : 'dark';
 
+  const lminParam = params.get('lmin');
+  const lmaxParam = params.get('lmax');
+  const lmin = lminParam !== null && isFinite(Number(lminParam)) ? Number(lminParam) : def.lightnessRange.min;
+  const lmax = lmaxParam !== null && isFinite(Number(lmaxParam)) ? Number(lmaxParam) : def.lightnessRange.max;
+
   return {
     colors: {
       primary:   params.get('p') ?? def.colors.primary,
       secondary: params.get('s') ?? def.colors.secondary,
       accent:    params.get('a') ?? def.colors.accent,
       neutral:   params.get('n') ?? def.colors.neutral,
-      tertiary:  params.get('t') ?? def.colors.tertiary,
     },
+    lightnessRange: { min: lmin, max: lmax },
     typography: {
       ...def.typography,
       headingFamily: params.get('hf') ?? def.typography.headingFamily,

@@ -4,7 +4,7 @@ import { deserializeConfig } from '@/lib/url-serializer';
 import { generateInitialStyles } from '@/lib/token-css-server';
 
 // URL params that signal a shared config is present
-const CONFIG_PARAMS = ['p', 's', 'a', 'n', 't', 'hf', 'bf', 'hw', 'bw', 'r', 'el'];
+const CONFIG_PARAMS = ['p', 's', 'a', 'n', 'hf', 'bf', 'hw', 'bw', 'r', 'el', 'lmin', 'lmax'];
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

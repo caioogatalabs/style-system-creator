@@ -3,7 +3,11 @@ export interface PrimitiveColors {
   secondary: string;
   accent: string;
   neutral: string;
-  tertiary: string;
+}
+
+export interface LightnessRange {
+  min: number; // step 950 lightness (darkest)
+  max: number; // step 50 lightness (lightest)
 }
 
 export type ElevationLevel = 'flat' | 'subtle' | 'elevated' | 'floating';
@@ -19,6 +23,7 @@ export interface TypographyConfig {
 
 export interface TokenConfig {
   colors: PrimitiveColors;
+  lightnessRange: LightnessRange;
   typography: TypographyConfig;
   surface: {
     radius: number;
@@ -42,7 +47,6 @@ export interface ResolvedColorScales {
   secondary: ColorScale;
   accent: ColorScale;
   neutral: ColorScale;
-  tertiary: ColorScale;
 }
 
 export interface SemanticColors {
@@ -60,13 +64,13 @@ export type TypeScale = Record<
 export type SpacingScale = Record<string, string>;
 
 export interface SurfaceTokens {
-  radiusSm: string;
-  radiusMd: string;
-  radiusLg: string;
+  radius1: string;
+  radius2: string;
+  radius3: string;
   radiusFull: string;
-  shadowSm: string;
-  shadowMd: string;
-  shadowLg: string;
+  shadow1: string;
+  shadow2: string;
+  shadow3: string;
 }
 
 export interface ResolvedTokens {
@@ -82,6 +86,7 @@ export type TokenAction =
   | { type: 'SET_TYPOGRAPHY'; patch: Partial<TypographyConfig> }
   | { type: 'SET_SURFACE'; patch: Partial<TokenConfig['surface']> }
   | { type: 'SET_SPACING'; patch: Partial<TokenConfig['spacing']> }
+  | { type: 'SET_LIGHTNESS_RANGE'; patch: Partial<LightnessRange> }
   | { type: 'SET_THEME'; theme: 'light' | 'dark' }
   | { type: 'LOAD_CONFIG'; config: TokenConfig }
   | { type: 'RESET' };

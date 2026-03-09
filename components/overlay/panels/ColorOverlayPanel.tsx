@@ -11,7 +11,6 @@ const COLOR_META: Record<keyof PrimitiveColors, { label: string; description: st
   secondary: { label: 'Secondary', description: 'Text, typography, readable content' },
   accent: { label: 'Accent', description: 'Highlights, badges, decorative elements' },
   neutral:   { label: 'Neutral',   description: 'Backgrounds, borders, surfaces' },
-  tertiary:  { label: 'Tertiary',  description: 'Dim labels, captions, decorative text' },
 };
 
 function getContrastColor(hex: string): string {
@@ -43,11 +42,11 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
 
   const scale = useMemo(() => {
     try {
-      return generateColorScale(hex);
+      return generateColorScale(hex, config.lightnessRange);
     } catch {
       return null;
     }
-  }, [hex]);
+  }, [hex, config.lightnessRange]);
 
   // Updates local draft only — no dispatch
   function applyHex(value: string) {
@@ -80,7 +79,7 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
           style={{
             flex: '4',
             backgroundColor: hex,
-            borderColor: 'var(--color-border-primary)',
+            borderColor: 'var(--color-border)',
           }}
         >
           <div className="mb-6">
@@ -114,7 +113,7 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
               className="relative h-10 w-10 overflow-hidden border shrink-0"
               style={{
                 borderColor: `oklch(1 0 0 / 0.25)`,
-                borderRadius: 'var(--radius-component-sm)',
+                borderRadius: 'var(--radius-1)',
               }}
             >
               <input
@@ -136,14 +135,14 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
               className="flex-1 border px-4 py-2.5 font-mono text-sm outline-none"
               style={{
                 backgroundColor: 'oklch(0 0 0 / 0.25)',
-                borderColor: error ? 'var(--color-text-danger)' : `oklch(1 0 0 / 0.25)`,
+                borderColor: error ? 'var(--color-danger)' : `oklch(1 0 0 / 0.25)`,
                 color: contrastColor,
-                borderRadius: 'var(--radius-component-sm)',
+                borderRadius: 'var(--radius-1)',
               }}
             />
           </div>
           {error && (
-            <p className="mt-2 text-xs" style={{ color: 'var(--color-text-danger)' }}>
+            <p className="mt-2 text-xs" style={{ color: 'var(--color-danger)' }}>
               Invalid hex color
             </p>
           )}
@@ -156,7 +155,7 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
         >
           <p
             className="mb-6 text-[10px] tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-muted)' }}
           >
             Generated Scale — {meta.label}
           </p>
@@ -193,24 +192,78 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
             </div>
           ) : (
             <div className="flex flex-1 items-center justify-center">
-              <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
                 Enter a valid hex color
               </p>
             </div>
           )}
+
+          {/* ── Lightness Range ── */}
+          <div className="mt-6 pt-6 border-t" style={{ borderColor: 'var(--color-border)' }}>
+            <p
+              className="mb-4 text-[10px] tracking-[0.2em] uppercase"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              Lightness Range
+            </p>
+            <div className="flex gap-6">
+              <div className="flex-1">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-[10px] tracking-[0.15em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+                    Darkest (950)
+                  </span>
+                  <span className="font-mono text-xs" style={{ color: 'var(--color-text)' }}>
+                    {config.lightnessRange.min.toFixed(2)}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={0.3}
+                  step={0.01}
+                  value={config.lightnessRange.min}
+                  onChange={(e) =>
+                    dispatch({ type: 'SET_LIGHTNESS_RANGE', patch: { min: Number(e.target.value) } })
+                  }
+                  className="w-full"
+                />
+              </div>
+              <div className="flex-1">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-[10px] tracking-[0.15em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+                    Lightest (50)
+                  </span>
+                  <span className="font-mono text-xs" style={{ color: 'var(--color-text)' }}>
+                    {config.lightnessRange.max.toFixed(2)}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={0.7}
+                  max={1}
+                  step={0.01}
+                  value={config.lightnessRange.max}
+                  onChange={(e) =>
+                    dispatch({ type: 'SET_LIGHTNESS_RANGE', patch: { max: Number(e.target.value) } })
+                  }
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ── Footer: Apply / Cancel ── */}
       <div
         className="flex items-center justify-between border-t px-8 py-4 shrink-0"
-        style={{ borderColor: 'var(--color-border-primary)' }}
+        style={{ borderColor: 'var(--color-border)' }}
       >
         <button
           type="button"
           onClick={closeOverlay}
           className="px-6 py-2 text-xs tracking-[0.1em] uppercase transition-colors"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{ color: 'var(--color-text-muted)' }}
         >
           Cancel
         </button>
@@ -220,9 +273,9 @@ export function ColorOverlayPanel({ colorKey }: ColorOverlayPanelProps) {
           disabled={error}
           className="px-6 py-2 text-xs tracking-[0.1em] uppercase transition-colors"
           style={{
-            backgroundColor: error ? 'var(--color-border-primary)' : 'var(--color-bg-fill-primary)',
-            color: 'var(--color-text-inverse)',
-            borderRadius: 'var(--radius-component-sm)',
+            backgroundColor: error ? 'var(--color-border)' : 'var(--color-primary)',
+            color: 'var(--color-on-primary)',
+            borderRadius: 'var(--radius-1)',
             opacity: error ? 0.5 : 1,
           }}
         >

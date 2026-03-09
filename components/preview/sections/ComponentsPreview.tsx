@@ -5,31 +5,31 @@ export function ComponentsPreview() {
     <section
       className="px-6 py-16"
       style={{
-        borderColor: 'var(--color-border-primary)',
-        backgroundColor: 'oklch(0.08 0 0)',
+        borderColor: 'var(--color-border)',
+        backgroundColor: 'var(--color-surface)',
       }}
     >
       {/* Section header */}
       <div
         className="mb-12 flex items-start gap-6 border-b pb-6"
-        style={{ borderColor: 'var(--color-border-primary)' }}
+        style={{ borderColor: 'var(--color-border)' }}
       >
         <span
           className="font-mono text-7xl font-light leading-none select-none"
-          style={{ color: 'oklch(0.20 0 0)' }}
+          style={{ color: 'var(--color-border)' }}
         >
           C
         </span>
         <div className="flex items-center gap-3 pt-4">
           <span
             className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
-            style={{ borderColor: 'var(--color-text-secondary)', color: 'var(--color-text-secondary)' }}
+            style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}
           >
             3
           </span>
           <span
             className="text-xs tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-muted)' }}
           >
             Components
           </span>
@@ -40,7 +40,7 @@ export function ComponentsPreview() {
       <div className="mb-12">
         <p
           className="mb-4 text-[10px] tracking-[0.2em] uppercase"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+          style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
         >
           Buttons
         </p>
@@ -49,9 +49,9 @@ export function ComponentsPreview() {
           <button
             className="px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
             style={{
-              backgroundColor: 'var(--color-bg-fill-primary)',
-              color: 'var(--color-text-inverse)',
-              borderRadius: 'var(--radius-component-md)',
+              backgroundColor: 'var(--color-primary)',
+              color: 'var(--color-on-primary)',
+              borderRadius: 'var(--radius-2)',
               fontFamily: 'var(--font-body)',
             }}
           >
@@ -61,9 +61,9 @@ export function ComponentsPreview() {
           <button
             className="px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
             style={{
-              backgroundColor: 'var(--color-bg-fill-secondary)',
-              color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-component-md)',
+              backgroundColor: 'var(--color-secondary)',
+              color: 'var(--color-text)',
+              borderRadius: 'var(--radius-2)',
               fontFamily: 'var(--font-body)',
             }}
           >
@@ -73,9 +73,9 @@ export function ComponentsPreview() {
           <button
             className="border px-5 py-2.5 text-sm font-medium transition-colors"
             style={{
-              borderColor: 'var(--color-border-primary)',
-              color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-component-md)',
+              borderColor: 'var(--color-border)',
+              color: 'var(--color-text)',
+              borderRadius: 'var(--radius-2)',
               fontFamily: 'var(--font-body)',
               backgroundColor: 'transparent',
             }}
@@ -86,8 +86,8 @@ export function ComponentsPreview() {
           <button
             className="px-5 py-2.5 text-sm font-medium transition-colors hover:opacity-70"
             style={{
-              color: 'var(--color-text-secondary)',
-              borderRadius: 'var(--radius-component-md)',
+              color: 'var(--color-text-muted)',
+              borderRadius: 'var(--radius-2)',
               fontFamily: 'var(--font-body)',
               backgroundColor: 'transparent',
             }}
@@ -98,9 +98,9 @@ export function ComponentsPreview() {
           <button
             className="px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
             style={{
-              backgroundColor: 'var(--color-error)',
-              color: 'oklch(0.97 0 0)',
-              borderRadius: 'var(--radius-component-md)',
+              backgroundColor: 'var(--color-danger)',
+              color: 'var(--color-on-primary)',
+              borderRadius: 'var(--radius-2)',
               fontFamily: 'var(--font-body)',
             }}
           >
@@ -115,7 +115,7 @@ export function ComponentsPreview() {
         <div>
           <p
             className="mb-4 text-[10px] tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+            style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
           >
             Input
           </p>
@@ -124,10 +124,10 @@ export function ComponentsPreview() {
             placeholder="Placeholder text..."
             className="w-full border px-4 py-2.5 text-sm outline-none transition-colors focus:ring-1"
             style={{
-              borderColor: 'var(--color-border-primary)',
-              backgroundColor: 'oklch(0.10 0 0)',
-              color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-component-md)',
+              borderColor: 'var(--color-border)',
+              backgroundColor: 'var(--color-surface-raised)',
+              color: 'var(--color-text)',
+              borderRadius: 'var(--radius-2)',
               fontFamily: 'var(--font-body)',
             }}
           />
@@ -137,18 +137,18 @@ export function ComponentsPreview() {
         <div>
           <p
             className="mb-4 text-[10px] tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+            style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
           >
             Badges
           </p>
           <div className="flex flex-wrap gap-2">
             {[
-              { label: 'Default', bg: 'var(--color-bg-fill-primary)', fg: 'var(--color-text-inverse)' },
-              { label: 'Secondary', bg: 'var(--color-bg-fill-secondary)', fg: 'var(--color-text-primary)' },
-              { label: 'Outline', bg: 'transparent', fg: 'var(--color-text-primary)', border: true },
-              { label: 'Success', bg: 'var(--color-success-bg)', fg: 'var(--color-success)' },
-              { label: 'Warning', bg: 'var(--color-warning-bg)', fg: 'var(--color-warning)' },
-              { label: 'Error', bg: 'var(--color-error-bg)', fg: 'var(--color-error)' },
+              { label: 'Default', bg: 'var(--color-primary)', fg: 'var(--color-on-primary)' },
+              { label: 'Secondary', bg: 'var(--color-secondary)', fg: 'var(--color-text)' },
+              { label: 'Outline', bg: 'transparent', fg: 'var(--color-text)', border: true },
+              { label: 'Success', bg: 'var(--color-success-muted)', fg: 'var(--color-success)' },
+              { label: 'Warning', bg: 'var(--color-warning-muted)', fg: 'var(--color-warning)' },
+              { label: 'Error', bg: 'var(--color-danger-muted)', fg: 'var(--color-danger)' },
             ].map((badge) => (
               <span
                 key={badge.label}
@@ -156,8 +156,8 @@ export function ComponentsPreview() {
                 style={{
                   backgroundColor: badge.bg,
                   color: badge.fg,
-                  borderColor: badge.border ? 'var(--color-border-primary)' : 'transparent',
-                  borderRadius: 'var(--radius-component-full)',
+                  borderColor: badge.border ? 'var(--color-border)' : 'transparent',
+                  borderRadius: 'var(--radius-full)',
                   fontFamily: 'var(--font-body)',
                 }}
               >
@@ -172,7 +172,7 @@ export function ComponentsPreview() {
       <div>
         <p
           className="mb-4 text-[10px] tracking-[0.2em] uppercase"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+          style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
         >
           Card
         </p>
@@ -182,30 +182,30 @@ export function ComponentsPreview() {
               key={style}
               className="border p-6"
               style={{
-                borderColor: style === 'Ghost' ? 'transparent' : 'var(--color-border-primary)',
-                backgroundColor: style === 'Filled' ? 'oklch(0.12 0 0)' : 'transparent',
-                borderRadius: 'var(--radius-component-lg)',
-                boxShadow: style === 'Outlined' ? 'var(--shadow-md)' : 'none',
+                borderColor: style === 'Ghost' ? 'transparent' : 'var(--color-border)',
+                backgroundColor: style === 'Filled' ? 'var(--color-surface-raised)' : 'transparent',
+                borderRadius: 'var(--radius-3)',
+                boxShadow: style === 'Outlined' ? 'var(--shadow-2)' : 'none',
               }}
             >
               <p
                 className="mb-2 text-[10px] tracking-[0.15em] uppercase"
-                style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+                style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
               >
                 {style}
               </p>
               <p
                 className="mb-2 text-base font-semibold"
-                style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-heading)' }}
+                style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}
               >
                 Card Title
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
                 A card component showing how surfaces and tokens work together in context.
               </p>
               <button
                 className="mt-4 text-xs underline underline-offset-4 transition-opacity hover:opacity-70"
-                style={{ color: 'var(--color-bg-fill-primary)', fontFamily: 'var(--font-body)' }}
+                style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-body)' }}
               >
                 Learn more →
               </button>

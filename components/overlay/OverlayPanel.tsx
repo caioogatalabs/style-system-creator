@@ -47,16 +47,16 @@ export function OverlayPanel() {
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex flex-col"
-      style={{ backgroundColor: 'var(--color-bg)' }}
+      style={{ backgroundColor: 'var(--color-surface)' }}
     >
       {/* Close bar */}
       <div
         className="flex items-center justify-between border-b px-8 py-4 shrink-0"
-        style={{ borderColor: 'var(--color-border-primary)' }}
+        style={{ borderColor: 'var(--color-border)' }}
       >
         <span
           className="text-xs tracking-[0.2em] uppercase"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{ color: 'var(--color-text-muted)' }}
         >
           {OVERLAY_LABELS[overlay.type]}
         </span>
@@ -64,15 +64,15 @@ export function OverlayPanel() {
           type="button"
           onClick={closeOverlay}
           className="flex items-center gap-2 transition-opacity hover:opacity-70"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{ color: 'var(--color-text-muted)' }}
         >
           <span className="text-xs tracking-[0.15em] uppercase">Close</span>
           <X size={14} />
         </button>
       </div>
 
-      {/* Panel content — scrollable */}
-      <div className="flex-1 overflow-auto">
+      {/* Panel content — typography manages its own scroll, others overflow */}
+      <div className={`flex-1 ${overlay.type === 'typography' ? 'min-h-0' : 'overflow-auto'}`}>
         {overlay.type === 'typography' && <TypographyOverlayPanel />}
         {overlay.type === 'color' && overlay.payload && (
           <ColorOverlayPanel colorKey={(overlay.payload as ColorOverlayPayload).colorKey} />

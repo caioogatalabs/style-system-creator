@@ -6,13 +6,12 @@ import { useOverlay } from '@/context/OverlayContext';
 import { generateAllColorScales } from '@/lib/token-engine';
 import type { ColorStep, PrimitiveColors } from '@/types/tokens';
 
-const COLOR_NAMES = ['primary', 'secondary', 'accent', 'neutral', 'tertiary'] as const;
+const COLOR_NAMES = ['primary', 'secondary', 'accent', 'neutral'] as const;
 const COLOR_LABELS: Record<string, string> = {
   primary: 'Primary',
   secondary: 'Secondary',
   accent: 'Accent',
   neutral: 'Neutral',
-  tertiary: 'Tertiary',
 };
 
 function getContrastColor(hex: string): string {
@@ -49,37 +48,37 @@ function SwatchCell({ step, index }: { step: ColorStep; index: number }) {
 export function ColorSwatchPreview() {
   const config = useTokenConfig();
   const { openOverlay } = useOverlay();
-  const scales = useMemo(() => generateAllColorScales(config.colors), [config.colors]);
+  const scales = useMemo(() => generateAllColorScales(config.colors, config.lightnessRange), [config.colors, config.lightnessRange]);
 
   return (
     <section
       className="border-b px-6 py-16"
       style={{
-        borderColor: 'var(--color-border-primary)',
-        backgroundColor: 'var(--color-bg)',
+        borderColor: 'var(--color-border)',
+        backgroundColor: 'var(--color-surface)',
       }}
     >
       {/* Section header */}
       <div
         className="mb-12 flex items-start gap-6 border-b pb-6"
-        style={{ borderColor: 'var(--color-border-primary)' }}
+        style={{ borderColor: 'var(--color-border)' }}
       >
         <span
-          className="font-mono text-7xl font-light leading-none select-none"
-          style={{ color: 'var(--color-border-primary)' }}
+          className="font-mono text-7xl font-light leading-none select-none pb-1"
+          style={{ color: 'var(--color-border)' }}
         >
           B
         </span>
         <div className="flex items-center gap-3 pt-4">
           <span
             className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
-            style={{ borderColor: 'var(--color-text-secondary)', color: 'var(--color-text-secondary)' }}
+            style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}
           >
             1
           </span>
           <span
             className="text-xs tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-muted)' }}
           >
             Colors
           </span>
@@ -146,7 +145,7 @@ export function ColorSwatchPreview() {
         <div key={name} className="mb-4">
           <p
             className="mb-2 text-[9px] tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+            style={{ color: 'var(--color-text-muted)', opacity: 0.5 }}
           >
             {COLOR_LABELS[name]} scale
           </p>

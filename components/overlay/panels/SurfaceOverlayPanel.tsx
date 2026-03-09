@@ -49,19 +49,19 @@ function LivePreview({
         className="p-6"
         style={{
           border: `${borderWidth} ${borderStyle} ${borderColor}`,
-          borderRadius: 'var(--radius-component-lg)',
-          boxShadow: 'var(--shadow-md)',
-          backgroundColor: 'var(--color-bg-surface-primary)',
+          borderRadius: 'var(--radius-3)',
+          boxShadow: 'var(--shadow-2)',
+          backgroundColor: 'var(--color-surface-raised)',
           width: 220,
         }}
       >
-        <p className="text-[9px] tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+        <p className="text-[9px] tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-text-muted)' }}>
           Card
         </p>
-        <p className="text-base font-semibold mb-2" style={{ color: 'var(--color-text-primary)', fontFamily: 'var(--font-heading)' }}>
+        <p className="text-base font-semibold mb-2" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
           Card Title
         </p>
-        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
           Surface preview with current tokens applied.
         </p>
       </div>
@@ -69,7 +69,7 @@ function LivePreview({
       {/* Inputs */}
       <div className="flex flex-col gap-3">
         <div>
-          <p className="text-[9px] tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-text-secondary)' }}>Input</p>
+          <p className="text-[9px] tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-text-muted)' }}>Input</p>
           <input
             type="text"
             placeholder="Input placeholder..."
@@ -77,9 +77,9 @@ function LivePreview({
             className="px-4 py-2.5 text-sm outline-none"
             style={{
               border: `${borderWidth} ${borderStyle} ${borderColor}`,
-              borderRadius: 'var(--radius-component-md)',
-              backgroundColor: 'var(--color-bg-surface-primary)',
-              color: 'var(--color-text-primary)',
+              borderRadius: 'var(--radius-2)',
+              backgroundColor: 'var(--color-surface-raised)',
+              color: 'var(--color-text)',
               fontFamily: 'var(--font-body)',
               width: 200,
               display: 'block',
@@ -87,17 +87,17 @@ function LivePreview({
           />
         </div>
         <div>
-          <p className="text-[9px] tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-text-secondary)' }}>:focus</p>
+          <p className="text-[9px] tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-text-muted)' }}>:focus</p>
           <input
             type="text"
             defaultValue="focus"
             readOnly
             className="px-4 py-2.5 text-sm outline-none"
             style={{
-              border: `2px solid var(--color-bg-fill-primary)`,
-              borderRadius: 'var(--radius-component-md)',
-              backgroundColor: 'var(--color-bg-surface-primary)',
-              color: 'var(--color-text-primary)',
+              border: `2px solid var(--color-primary)`,
+              borderRadius: 'var(--radius-2)',
+              backgroundColor: 'var(--color-surface-raised)',
+              color: 'var(--color-text)',
               fontFamily: 'var(--font-body)',
               width: 200,
               display: 'block',
@@ -108,13 +108,13 @@ function LivePreview({
 
       {/* Buttons */}
       <div className="flex flex-col gap-3">
-        <p className="text-[9px] tracking-[0.15em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>Buttons</p>
+        <p className="text-[9px] tracking-[0.15em] uppercase" style={{ color: 'var(--color-text-muted)' }}>Buttons</p>
         <button
           className="px-5 py-2.5 text-sm font-medium"
           style={{
-            backgroundColor: 'var(--color-bg-fill-primary)',
-            color: 'var(--color-text-inverse)',
-            borderRadius: 'var(--radius-component-md)',
+            backgroundColor: 'var(--color-primary)',
+            color: 'var(--color-on-primary)',
+            borderRadius: 'var(--radius-2)',
             border: 'none',
             fontFamily: 'var(--font-body)',
           }}
@@ -125,8 +125,8 @@ function LivePreview({
           className="px-5 py-2.5 text-sm font-medium"
           style={{
             backgroundColor: 'transparent',
-            color: 'var(--color-text-primary)',
-            borderRadius: 'var(--radius-component-md)',
+            color: 'var(--color-text)',
+            borderRadius: 'var(--radius-2)',
             border: `${borderWidth} ${borderStyle} ${borderColor}`,
             fontFamily: 'var(--font-body)',
           }}
@@ -171,7 +171,7 @@ export function SurfaceOverlayPanel() {
   return (
     <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 57px)' }}>
       {/* Tab bar */}
-      <div className="flex border-b shrink-0" style={{ borderColor: 'var(--color-border-primary)' }}>
+      <div className="flex border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -179,8 +179,8 @@ export function SurfaceOverlayPanel() {
             onClick={() => setActiveTab(tab.id)}
             className="px-8 py-4 text-xs tracking-[0.15em] uppercase transition-colors border-b-2"
             style={{
-              color: activeTab === tab.id ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
-              borderBottomColor: activeTab === tab.id ? 'var(--color-bg-fill-primary)' : 'transparent',
+              color: activeTab === tab.id ? 'var(--color-text)' : 'var(--color-text-muted)',
+              borderBottomColor: activeTab === tab.id ? 'var(--color-primary)' : 'transparent',
             }}
           >
             {tab.label}
@@ -193,11 +193,11 @@ export function SurfaceOverlayPanel() {
         {/* Options panel */}
         <div
           className="p-8 border-r overflow-auto shrink-0"
-          style={{ width: 380, borderColor: 'var(--color-border-primary)' }}
+          style={{ width: 380, borderColor: 'var(--color-border)' }}
         >
           {activeTab === 'radius' && (
             <div>
-              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
                 Border Radius
               </p>
 
@@ -212,16 +212,16 @@ export function SurfaceOverlayPanel() {
                     style={{
                       borderColor:
                         localSurface.radius === opt.value
-                          ? 'var(--color-bg-fill-primary)'
-                          : 'var(--color-border-primary)',
+                          ? 'var(--color-primary)'
+                          : 'var(--color-border)',
                       color:
                         localSurface.radius === opt.value
-                          ? 'var(--color-bg-fill-primary)'
-                          : 'var(--color-text-secondary)',
-                      borderRadius: 'var(--radius-component-sm)',
+                          ? 'var(--color-primary)'
+                          : 'var(--color-text-muted)',
+                      borderRadius: 'var(--radius-1)',
                       backgroundColor:
                         localSurface.radius === opt.value
-                          ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
+                          ? 'oklch(from var(--color-primary) l c h / 0.08)'
                           : 'transparent',
                     }}
                   >
@@ -234,10 +234,10 @@ export function SurfaceOverlayPanel() {
               {localSurface.radius < 9999 && (
                 <div>
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+                    <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
                       Custom
                     </p>
-                    <span className="font-mono text-xs" style={{ color: 'var(--color-text-primary)' }}>
+                    <span className="font-mono text-xs" style={{ color: 'var(--color-text)' }}>
                       {localSurface.radius}px
                     </span>
                   </div>
@@ -259,7 +259,7 @@ export function SurfaceOverlayPanel() {
 
           {activeTab === 'elevation' && (
             <div className="flex flex-col gap-2">
-              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
                 Shadow Level
               </p>
               {ELEVATION_OPTIONS.map((opt) => (
@@ -271,19 +271,19 @@ export function SurfaceOverlayPanel() {
                   style={{
                     borderColor:
                       localSurface.elevation === opt.value
-                        ? 'var(--color-bg-fill-primary)'
-                        : 'var(--color-border-primary)',
-                    borderRadius: 'var(--radius-component-sm)',
+                        ? 'var(--color-primary)'
+                        : 'var(--color-border)',
+                    borderRadius: 'var(--radius-1)',
                     backgroundColor:
                       localSurface.elevation === opt.value
-                        ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
+                        ? 'oklch(from var(--color-primary) l c h / 0.08)'
                         : 'transparent',
                   }}
                 >
-                  <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
+                  <span className="text-sm" style={{ color: 'var(--color-text)' }}>
                     {opt.label}
                   </span>
-                  <span className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+                  <span className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
                     {opt.description}
                   </span>
                 </button>
@@ -293,7 +293,7 @@ export function SurfaceOverlayPanel() {
 
           {activeTab === 'borders' && (
             <div>
-              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
                 Intensity
               </p>
               <div className="flex flex-wrap gap-2 mb-6">
@@ -305,13 +305,13 @@ export function SurfaceOverlayPanel() {
                     className="px-4 py-2 text-sm border transition-colors"
                     style={{
                       borderColor:
-                        borderPresetIdx === i ? 'var(--color-bg-fill-primary)' : 'var(--color-border-primary)',
+                        borderPresetIdx === i ? 'var(--color-primary)' : 'var(--color-border)',
                       color:
-                        borderPresetIdx === i ? 'var(--color-bg-fill-primary)' : 'var(--color-text-secondary)',
-                      borderRadius: 'var(--radius-component-sm)',
+                        borderPresetIdx === i ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                      borderRadius: 'var(--radius-1)',
                       backgroundColor:
                         borderPresetIdx === i
-                          ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
+                          ? 'oklch(from var(--color-primary) l c h / 0.08)'
                           : 'transparent',
                     }}
                   >
@@ -320,7 +320,7 @@ export function SurfaceOverlayPanel() {
                 ))}
               </div>
 
-              <p className="mb-3 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="mb-3 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
                 Style
               </p>
               <div className="flex gap-2 mb-6">
@@ -332,12 +332,12 @@ export function SurfaceOverlayPanel() {
                     className="px-4 py-2 text-sm border transition-colors"
                     style={{
                       borderColor:
-                        borderStyle === s ? 'var(--color-bg-fill-primary)' : 'var(--color-border-primary)',
-                      color: borderStyle === s ? 'var(--color-bg-fill-primary)' : 'var(--color-text-secondary)',
-                      borderRadius: 'var(--radius-component-sm)',
+                        borderStyle === s ? 'var(--color-primary)' : 'var(--color-border)',
+                      color: borderStyle === s ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                      borderRadius: 'var(--radius-1)',
                       backgroundColor:
                         borderStyle === s
-                          ? 'oklch(from var(--color-bg-fill-primary) l c h / 0.08)'
+                          ? 'oklch(from var(--color-primary) l c h / 0.08)'
                           : 'transparent',
                     }}
                   >
@@ -349,17 +349,17 @@ export function SurfaceOverlayPanel() {
               <div
                 className="p-3 border"
                 style={{
-                  borderColor: 'var(--color-border-primary)',
-                  borderRadius: 'var(--radius-component-sm)',
+                  borderColor: 'var(--color-border)',
+                  borderRadius: 'var(--radius-1)',
                 }}
               >
-                <p className="text-[9px] tracking-[0.15em] uppercase mb-1" style={{ color: 'var(--color-text-secondary)' }}>
+                <p className="text-[9px] tracking-[0.15em] uppercase mb-1" style={{ color: 'var(--color-text-muted)' }}>
                   Current
                 </p>
-                <p className="font-mono text-sm" style={{ color: 'var(--color-text-primary)' }}>
+                <p className="font-mono text-sm" style={{ color: 'var(--color-text)' }}>
                   {currentBorderPreset.width} {borderStyle}
                 </p>
-                <p className="font-mono text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+                <p className="font-mono text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
                   opacity: {currentBorderPreset.opacity}
                 </p>
               </div>
@@ -368,7 +368,7 @@ export function SurfaceOverlayPanel() {
 
           {activeTab === 'card' && (
             <div>
-              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="mb-4 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
                 Card Padding
               </p>
               <div className="flex flex-col gap-2">
@@ -383,14 +383,14 @@ export function SurfaceOverlayPanel() {
                     type="button"
                     className="flex items-center justify-between px-4 py-3 border text-left transition-colors"
                     style={{
-                      borderColor: 'var(--color-border-primary)',
-                      borderRadius: 'var(--radius-component-sm)',
+                      borderColor: 'var(--color-border)',
+                      borderRadius: 'var(--radius-1)',
                     }}
                   >
-                    <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
+                    <span className="text-sm" style={{ color: 'var(--color-text)' }}>
                       {opt.label}
                     </span>
-                    <span className="font-mono text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+                    <span className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
                       {opt.value}px
                     </span>
                   </button>
@@ -405,7 +405,7 @@ export function SurfaceOverlayPanel() {
           <div>
             <p
               className="mb-8 text-[10px] tracking-[0.2em] uppercase"
-              style={{ color: 'var(--color-text-secondary)' }}
+              style={{ color: 'var(--color-text-muted)' }}
             >
               Live Preview
             </p>
@@ -421,13 +421,13 @@ export function SurfaceOverlayPanel() {
       {/* Footer: Apply / Cancel */}
       <div
         className="flex items-center justify-between border-t px-8 py-4 shrink-0"
-        style={{ borderColor: 'var(--color-border-primary)' }}
+        style={{ borderColor: 'var(--color-border)' }}
       >
         <button
           type="button"
           onClick={closeOverlay}
           className="px-6 py-2 text-xs tracking-[0.1em] uppercase transition-colors"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{ color: 'var(--color-text-muted)' }}
         >
           Cancel
         </button>
@@ -436,9 +436,9 @@ export function SurfaceOverlayPanel() {
           onClick={handleApply}
           className="px-6 py-2 text-xs tracking-[0.1em] uppercase"
           style={{
-            backgroundColor: 'var(--color-bg-fill-primary)',
-            color: 'var(--color-text-inverse)',
-            borderRadius: 'var(--radius-component-sm)',
+            backgroundColor: 'var(--color-primary)',
+            color: 'var(--color-on-primary)',
+            borderRadius: 'var(--radius-1)',
           }}
         >
           Apply →

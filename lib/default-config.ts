@@ -6,7 +6,10 @@ export const DEFAULT_TOKEN_CONFIG: TokenConfig = {
     secondary: '#8b5cf6',
     accent: '#f59e0b',
     neutral: '#64748b',
-    tertiary: '#4a5568',
+  },
+  lightnessRange: {
+    min: 0.05,
+    max: 0.98,
   },
   typography: {
     headingFamily: 'Playfair Display',

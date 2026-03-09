@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
 import { useOverlay } from '@/context/OverlayContext';
 import type { TypographyOverlayPayload, FontTarget } from '@/context/OverlayContext';
@@ -63,6 +63,11 @@ export function TypographyOverlayPanel() {
   }, []);
 
   const activeFont = activeTarget === 'heading' ? draft.headingFamily : draft.bodyFamily;
+  const activeFontRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    activeFontRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [activeFont]);
 
   const filteredFonts = FONT_LIST.filter((f) =>
     f.toLowerCase().includes(search.toLowerCase())
@@ -87,13 +92,19 @@ export function TypographyOverlayPanel() {
     closeOverlay();
   }
 
+  // Specimen size reacts to the scale — H1 for headings, Body for body
+  const specimenSize = activeTarget === 'heading'
+    ? scaleTable.find((s) => s.key === 'H1')!.size
+    : scaleTable.find((s) => s.key === 'Body')!.size;
+
   return (
-    <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 57px)' }}>
-      <div className="flex flex-1">
-        {/* ── Left: specimen (70%) ── */}
+    <div className="flex flex-col h-full">
+      {/* Main content — left specimen (fixed) + right controls (scrollable) */}
+      <div className="flex flex-1 min-h-0">
+        {/* ── Left: specimen (70%) — no scroll ── */}
         <div
-          className="flex flex-col justify-end p-16 border-r"
-          style={{ flex: '7', borderColor: 'var(--color-border-primary)' }}
+          className="flex flex-col justify-end p-16 border-r shrink-0"
+          style={{ flex: '7', borderColor: 'var(--color-border)' }}
         >
           {/* Target toggle */}
           <div className="mb-8 flex gap-1">
@@ -104,9 +115,9 @@ export function TypographyOverlayPanel() {
                 onClick={() => setActiveTarget(t)}
                 className="px-4 py-1.5 text-xs tracking-[0.15em] uppercase transition-colors"
                 style={{
-                  backgroundColor: activeTarget === t ? 'var(--color-bg-fill-primary)' : 'transparent',
-                  color: activeTarget === t ? 'var(--color-text-inverse)' : 'var(--color-text-secondary)',
-                  borderRadius: 'var(--radius-component-sm)',
+                  backgroundColor: activeTarget === t ? 'var(--color-primary)' : 'transparent',
+                  color: activeTarget === t ? 'var(--color-on-primary)' : 'var(--color-text-muted)',
+                  borderRadius: 'var(--radius-1)',
                 }}
               >
                 {t === 'heading' ? 'Heading' : 'Body'}
@@ -114,14 +125,14 @@ export function TypographyOverlayPanel() {
             ))}
           </div>
 
-          {/* Large specimen */}
+          {/* Large specimen — size reacts to base size + scale ratio */}
           <p
-            className="leading-none select-none mb-6"
+            className="leading-none select-none mb-6 transition-all duration-200"
             style={{
               fontFamily: `"${activeFont}", sans-serif`,
               fontWeight: activeTarget === 'heading' ? draft.headingWeight : draft.bodyWeight,
-              fontSize: 'clamp(48px, 8vw, 140px)',
-              color: 'var(--color-text-primary)',
+              fontSize: `clamp(48px, ${specimenSize}px, 140px)`,
+              color: 'var(--color-text)',
               letterSpacing: '-0.02em',
             }}
           >
@@ -133,55 +144,59 @@ export function TypographyOverlayPanel() {
             className="mb-4 text-xl tracking-widest select-none"
             style={{
               fontFamily: `"${activeFont}", sans-serif`,
-              color: 'var(--color-text-secondary)',
+              color: 'var(--color-text-muted)',
             }}
           >
             Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm
           </p>
 
-          {/* Sentence */}
+          {/* Sentence — uses derived Body size */}
           <p
-            className="text-lg leading-relaxed max-w-prose"
+            className="leading-relaxed max-w-prose"
             style={{
               fontFamily: `"${activeFont}", sans-serif`,
-              color: 'var(--color-text-secondary)',
+              fontSize: `${scaleTable.find((s) => s.key === 'Body')!.size}px`,
+              color: 'var(--color-text-muted)',
             }}
           >
             The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.
           </p>
         </div>
 
-        {/* ── Right: controls (30%) ── */}
+        {/* ── Right: controls (30%) — internal scroll ── */}
         <div
-          className="flex flex-col overflow-auto p-8"
+          className="flex flex-col min-h-0"
           style={{ flex: '3', minWidth: 0 }}
         >
-          {/* Search */}
-          <input
-            type="text"
-            placeholder="Search fonts..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="mb-4 w-full border px-4 py-2.5 text-sm outline-none"
-            style={{
-              backgroundColor: 'var(--color-bg-surface-primary)',
-              borderColor: 'var(--color-border-primary)',
-              color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-component-sm)',
-              fontFamily: 'var(--font-body)',
-            }}
-          />
+          {/* Search — sticky top */}
+          <div className="shrink-0 p-8 pb-0">
+            <input
+              type="text"
+              placeholder="Search fonts..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="mb-4 w-full border px-4 py-2.5 text-sm outline-none"
+              style={{
+                backgroundColor: 'var(--color-surface-raised)',
+                borderColor: 'var(--color-border)',
+                color: 'var(--color-text)',
+                borderRadius: 'var(--radius-1)',
+                fontFamily: 'var(--font-body)',
+              }}
+            />
+          </div>
 
-          {/* Font list */}
-          <div className="flex-1 overflow-auto mb-8">
+          {/* Font list — only this scrolls */}
+          <div className="flex-1 overflow-auto px-8">
             {filteredFonts.map((family) => (
               <button
                 key={family}
+                ref={family === activeFont ? activeFontRef : undefined}
                 type="button"
                 onClick={() => selectFont(family)}
                 className="flex w-full items-center justify-between border-b py-3 text-left transition-opacity hover:opacity-100"
                 style={{
-                  borderColor: 'var(--color-border-primary)',
+                  borderColor: 'var(--color-border)',
                   opacity: family === activeFont ? 1 : 0.5,
                 }}
               >
@@ -189,7 +204,7 @@ export function TypographyOverlayPanel() {
                   style={{
                     fontFamily: `"${family}", sans-serif`,
                     fontSize: '1.125rem',
-                    color: 'var(--color-text-primary)',
+                    color: 'var(--color-text)',
                   }}
                 >
                   {family}
@@ -197,7 +212,7 @@ export function TypographyOverlayPanel() {
                 {family === activeFont && (
                   <span
                     className="text-[9px] tracking-[0.15em] uppercase shrink-0"
-                    style={{ color: 'var(--color-bg-fill-primary)' }}
+                    style={{ color: 'var(--color-primary)' }}
                   >
                     Active
                   </span>
@@ -206,87 +221,73 @@ export function TypographyOverlayPanel() {
             ))}
           </div>
 
-          {/* Scale Ratio */}
-          <div className="mb-6 shrink-0">
-            <p className="mb-3 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
-              Scale Ratio
-            </p>
-            <div className="flex flex-col gap-1">
-              {SCALE_RATIOS.map((r) => (
-                <button
-                  key={r.value}
-                  type="button"
-                  onClick={() => setDraft((d) => ({ ...d, scaleRatio: r.value }))}
-                  className="flex items-center justify-between px-3 py-2 text-left transition-colors"
-                  style={{
-                    backgroundColor:
-                      draft.scaleRatio === r.value
-                        ? 'var(--color-bg-surface-primary)'
-                        : 'transparent',
-                    borderRadius: 'var(--radius-component-sm)',
-                  }}
-                >
-                  <span className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
-                    {r.label}
-                  </span>
-                  <span className="font-mono text-xs" style={{ color: 'var(--color-text-secondary)' }}>
-                    {r.value}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Base size + scale table */}
-          <div className="shrink-0">
-            <div className="mb-3 flex items-center justify-between">
-              <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
-                Base Size
+          {/* Scale controls — fixed at bottom of right panel */}
+          <div className="shrink-0 px-8 py-6 border-t" style={{ borderColor: 'var(--color-border)' }}>
+            {/* Scale Ratio */}
+            <div className="mb-5">
+              <p className="mb-2 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+                Scale Ratio
               </p>
-              <span className="font-mono text-xs" style={{ color: 'var(--color-text-primary)' }}>
-                {draft.baseSize}px
-              </span>
+              <div className="flex flex-wrap gap-1">
+                {SCALE_RATIOS.map((r) => (
+                  <button
+                    key={r.value}
+                    type="button"
+                    onClick={() => setDraft((d) => ({ ...d, scaleRatio: r.value }))}
+                    className="px-3 py-1.5 text-left transition-colors"
+                    style={{
+                      backgroundColor:
+                        draft.scaleRatio === r.value
+                          ? 'var(--color-surface-raised)'
+                          : 'transparent',
+                      borderRadius: 'var(--radius-1)',
+                    }}
+                  >
+                    <span className="text-xs" style={{ color: 'var(--color-text)' }}>
+                      {r.label}
+                    </span>
+                    <span className="font-mono text-[10px] ml-1.5" style={{ color: 'var(--color-text-muted)' }}>
+                      {r.value}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
-            <input
-              type="range"
-              min={12}
-              max={24}
-              step={1}
-              value={draft.baseSize}
-              onChange={(e) => setDraft((d) => ({ ...d, baseSize: Number(e.target.value) }))}
-              className="w-full mb-6"
-            />
 
-            {/* Scale table */}
-            <p className="mb-2 text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
-              Derived Scale
-            </p>
-            <div className="flex flex-col gap-1">
-              {scaleTable.map(({ key, size }) => (
-                <div key={key} className="flex items-center justify-between py-1">
-                  <span className="text-[11px] tracking-[0.1em] uppercase" style={{ color: 'var(--color-text-secondary)' }}>
-                    {key}
-                  </span>
-                  <span className="font-mono text-xs" style={{ color: 'var(--color-text-primary)' }}>
-                    {size}px
-                  </span>
-                </div>
-              ))}
+            {/* Base size slider */}
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+                  Base Size
+                </p>
+                <span className="font-mono text-xs" style={{ color: 'var(--color-text)' }}>
+                  {draft.baseSize}px
+                </span>
+              </div>
+              <input
+                type="range"
+                min={12}
+                max={24}
+                step={1}
+                value={draft.baseSize}
+                onChange={(e) => setDraft((d) => ({ ...d, baseSize: Number(e.target.value) }))}
+                className="w-full"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Footer: Apply / Cancel ── */}
+      {/* ── Footer: Apply / Cancel — always visible ── */}
       <div
         className="flex items-center justify-between border-t px-8 py-4 shrink-0"
-        style={{ borderColor: 'var(--color-border-primary)' }}
+        style={{ borderColor: 'var(--color-border)' }}
       >
         <button
           type="button"
           onClick={closeOverlay}
           className="px-6 py-2 text-xs tracking-[0.1em] uppercase transition-colors"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{ color: 'var(--color-text-muted)' }}
         >
           Cancel
         </button>
@@ -295,9 +296,9 @@ export function TypographyOverlayPanel() {
           onClick={handleApply}
           className="px-6 py-2 text-xs tracking-[0.1em] uppercase"
           style={{
-            backgroundColor: 'var(--color-bg-fill-primary)',
-            color: 'var(--color-text-inverse)',
-            borderRadius: 'var(--radius-component-sm)',
+            backgroundColor: 'var(--color-primary)',
+            color: 'var(--color-on-primary)',
+            borderRadius: 'var(--radius-1)',
           }}
         >
           Apply →
