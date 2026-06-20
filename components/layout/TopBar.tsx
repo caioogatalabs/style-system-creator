@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Share2, Sun, Moon } from 'lucide-react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
+import { useBrand } from '@/context/BrandContext';
 import { serializeConfig } from '@/lib/url-serializer';
 
 const NAV_ITEMS = [
@@ -11,11 +12,13 @@ const NAV_ITEMS = [
   { href: '/typography', label: 'Typography' },
   { href: '/colors', label: 'Colors' },
   { href: '/components', label: 'Components' },
+  { href: '/assets', label: 'Assets' },
 ];
 
 export function TopBar() {
   const pathname = usePathname();
   const { config, dispatch } = useTokenConfigContext();
+  const { manifest } = useBrand();
 
   function handleShare() {
     const params = serializeConfig(config);
@@ -36,20 +39,20 @@ export function TopBar() {
       }}
     >
       <div className="flex h-14 w-full items-center justify-between px-8">
-        {/* Logo */}
+        {/* Brand identity */}
         <div className="flex items-center gap-3">
-          <span
-            className="text-xs font-mono tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            Style System
-          </span>
-          <span style={{ color: 'var(--color-border)' }}>·</span>
           <span
             className="text-xs font-mono tracking-[0.2em] uppercase"
             style={{ color: 'var(--color-text)' }}
           >
-            Creator
+            {manifest.name}
+          </span>
+          <span style={{ color: 'var(--color-border)' }}>·</span>
+          <span
+            className="text-xs font-mono tracking-[0.2em] uppercase"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            Brand System
           </span>
         </div>
 

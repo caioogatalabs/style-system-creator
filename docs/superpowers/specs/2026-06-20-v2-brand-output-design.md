@@ -153,3 +153,21 @@ Everything must be clear and documented so other agents can understand the proje
 Deliver: `brand/` contract + `lib/brand-loader.ts` + `types/brand.ts` + `/assets` route & section +
 product reframe + agent documentation (`brand/README.md`, `AGENTS.md`, `docs/architecture.md`).
 Fine polish of the existing screens can follow later.
+
+## 9. Implementation refinements (as built)
+
+Refinements made during implementation, kept consistent across code + docs:
+
+- **Contract lives at `public/brand/`** (not repo root). One folder for the agent to populate,
+  and asset files are served directly at `/brand/<path>` with no bundling step. The loader reads
+  the JSON from there via `fs` server-side.
+- **Tone of voice is structured JSON** in `assets.json` (`voice.summary` / `principles` / `dos` /
+  `donts`), not a `voice.md` file — zero-dependency, deterministic to render, easier for the agent
+  to fill.
+- **`colors.json → status`** is part of the contract and validated, but the engine still renders
+  fixed status colors today; wiring configurable status into `compute-token-vars.ts` is a noted
+  follow-up (see `AGENTS.md`).
+- **No test runner is installed**; rather than add one (out of scope), `brand-loader` validates at
+  runtime and throws path-prefixed `[brand] …` errors — the surface the scaffolding agent depends on.
+- Monochrome assets (icons, `mono` logo) render via CSS mask tinted to `var(--color-text)` so they
+  stay visible on dark surfaces.

@@ -1,0 +1,34 @@
+{
+  "logo": [
+    { "id": "primary", "label": "Primary logo", "file": "assets/logo/primary.svg", "variant": "full" },
+    { "id": "mark", "label": "Symbol", "file": "assets/logo/mark.svg", "variant": "mark" },
+    { "id": "mono", "label": "Monochrome", "file": "assets/logo/mono.svg", "variant": "mono" }
+  ],
+  "icons": {
+    "dir": "assets/icons",
+    "style": "outline",
+    "files": ["spark.svg", "layers.svg", "orbit.svg", "bolt.svg"]
+  },
+  "images": [
+    { "id": "hero", "label": "Key image", "file": "assets/images/hero.svg" },
+    { "id": "texture", "label": "Texture", "file": "assets/images/texture.svg" }
+  ],
+  "voice": {
+    "summary": "Clear, confident, and warm. Lumen speaks plainly and never hides behind jargon.",
+    "principles": [
+      { "title": "Plain over clever", "description": "Say the useful thing directly. Wit is welcome only when it adds clarity." },
+      { "title": "Confident, not loud", "description": "State things once, with conviction. No exclamation pile-ups." },
+      { "title": "Warm and human", "description": "Write to a person, not a persona. Contractions are good." }
+    ],
+    "dos": [
+      "Lead with the benefit to the reader",
+      "Use short, active sentences",
+      "Prefer concrete nouns over abstractions"
+    ],
+    "donts": [
+      "Avoid hype words like “revolutionary”",
+      "Don't stack three adjectives where one works",
+      "Never bury the point under preamble"
+    ]
+  }
+}

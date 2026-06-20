@@ -1,5 +1,17 @@
 'use client';
 
+/**
+ * Font resolution for the viewer.
+ *
+ * The viewer only *reads* the font families declared in the brand contract
+ * (`public/brand/typography.json`) and resolves them from the curated lists
+ * below. CONNECTING / HOSTING fonts for a real brand — adding new families,
+ * self-hosting files, licensing — is the scaffolding agent's responsibility,
+ * not this file's. When a brand uses a family not in these lists, the agent
+ * should wire it up (e.g. add an @font-face / next/font entry); `loadFont`
+ * is a no-op for unknown families by design.
+ */
+
 const loadedFonts = new Set<string>();
 
 // Fonts from Google Fonts (standard)
