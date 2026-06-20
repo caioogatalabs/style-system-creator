@@ -47,8 +47,34 @@ public/brand/*.json  →  lib/brand-loader.ts  →  { manifest, assets, config:T
 | `/assets` | `AssetsPage` | Logo / icons / imagery / tone of voice |
 
 To add a screen, follow this pair pattern and add a `NAV_ITEMS` entry in
-`components/layout/TopBar.tsx`. Use CSS vars (`var(--color-…)`, `var(--font-…)`)
-for all styling — never hardcode brand values in a screen.
+`components/layout/TopBar.tsx`. Never hardcode brand values in a screen — style
+from the token utilities below (preferred) or `var(--color-…)` for dynamic cases.
+
+## Styling — Tailwind v4 token utilities
+
+The project's design tokens are registered in `@theme` (see `app/globals.css`),
+so they exist as utilities. **Prefer these over inline `style={{ var(--…) }}`**
+in new code (`components/pages/AssetsPage.tsx` is the reference implementation):
+
+| Utility | Token |
+|---------|-------|
+| `bg-surface`, `bg-surface-raised` | page / raised surfaces |
+| `text-text`, `text-text-muted`, `text-text-dim` | text hierarchy |
+| `bg-primary`, `border-border`, `border-border-muted` | brand primary / borders |
+| `bg-brand-secondary`, `bg-brand-accent` | **brand** secondary / accent hues |
+| `text-success`, `text-danger`, `text-warning`, `text-info` | status |
+| `font-heading`, `font-body` | font families |
+| `text-h1`…`text-h6`, `text-body` | type scale sizes |
+| `rounded-1/2/3`, `shadow-1/2/3` | radius / elevation |
+
+⚠️ **shadcn naming overlap:** bare `secondary` / `accent` (e.g. `bg-secondary`,
+`bg-accent`) are shadcn's *subtle surface* tones (grey), **not** the brand hues —
+the shadcn bridge maps them to `surface-raised`. For the brand hues always use
+`bg-brand-secondary` / `bg-brand-accent`. `primary` and `border` map to the same
+value in both worlds, so `bg-primary` / `border-border` are unambiguous.
+
+Use inline `style={{ … }}` only for genuinely dynamic values (a selected color,
+a computed size, a runtime grid template).
 
 ## Conventions
 

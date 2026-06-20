@@ -46,6 +46,69 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * PROJECT DESIGN TOKENS → Tailwind utilities
+   * These are `inline` so Tailwind emits utilities that reference the runtime
+   * CSS vars (set by the token engine on :root) without re-declaring them.
+   * Use these utilities instead of style={{ var(--color-*) }} in new code:
+   *   bg-surface  text-text  text-text-muted  border-border-muted
+   *   rounded-1/2/3  shadow-1/2/3  text-h1…text-h6/text-body  font-heading
+   *
+   * Naming note (shadcn overlap): `primary`/`border` map to the same value as
+   * the engine via the shadcn bridge, so `bg-primary` / `border-border` are
+   * correct. But shadcn's `secondary` & `accent` mean "subtle surface" (grey),
+   * NOT the brand hues. For the brand hues use `brand-secondary`/`brand-accent`.
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-dim: var(--color-text-dim);
+
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-active: var(--color-primary-active);
+  --color-primary-text: var(--color-primary-text);
+  --color-on-primary: var(--color-on-primary);
+
+  --color-brand-secondary: var(--color-secondary);
+  --color-secondary-hover: var(--color-secondary-hover);
+  --color-secondary-text: var(--color-secondary-text);
+  --color-on-secondary: var(--color-on-secondary);
+
+  --color-brand-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-text: var(--color-accent-text);
+  --color-on-accent: var(--color-on-accent);
+
+  --color-border-muted: var(--color-border-muted);
+
+  --color-danger: var(--color-danger);
+  --color-danger-muted: var(--color-danger-muted);
+  --color-warning: var(--color-warning);
+  --color-warning-muted: var(--color-warning-muted);
+  --color-success: var(--color-success);
+  --color-success-muted: var(--color-success-muted);
+  --color-info: var(--color-info);
+
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  --text-h1: var(--text-h1);
+  --text-h2: var(--text-h2);
+  --text-h3: var(--text-h3);
+  --text-h4: var(--text-h4);
+  --text-h5: var(--text-h5);
+  --text-h6: var(--text-h6);
+  --text-body: var(--text-body);
+
+  --radius-1: var(--radius-1);
+  --radius-2: var(--radius-2);
+  --radius-3: var(--radius-3);
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
 }
 
 /* ── shadcn token seeds (light defaults — JS overwrites at runtime) ── */
