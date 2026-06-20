@@ -45,6 +45,7 @@ public/brand/*.json  →  lib/brand-loader.ts  →  { manifest, assets, config:T
 | `/colors` | `ColorsPage` | Color scales + semantic tokens |
 | `/components` | `ComponentsPage` | Components on semantic tokens |
 | `/assets` | `AssetsPage` | Logo / icons / imagery / tone of voice |
+| `/context` | `ContextPage` | Brand tokens applied to realistic shadcn scenes (Cards/Dashboard/Marketing) |
 
 To add a screen, follow this pair pattern and add a `NAV_ITEMS` entry in
 `components/layout/TopBar.tsx`. Never hardcode brand values in a screen — style
@@ -87,6 +88,10 @@ a computed size, a runtime grid template).
   unknown ones).
 - **Read-only:** there is no approve/reject state or export gate — approval
   happens outside the app.
+- **Brand-defined tone:** the app boots in the brand's own tone
+  (`brand.json → defaultTheme`), already showing the client system — unlike a
+  theme *switcher*. The theme toggle only previews the other tone; it never
+  persists or writes back.
 
 ## Run
 

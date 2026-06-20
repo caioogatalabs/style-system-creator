@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: '/colors', label: 'Colors' },
   { href: '/components', label: 'Components' },
   { href: '/assets', label: 'Assets' },
+  { href: '/context', label: 'In Context' },
 ];
 
 export function TopBar() {

@@ -94,11 +94,16 @@ function requireAssetFile(file: string, where: string): void {
 function parseManifest(): BrandManifest {
   const raw = readJson<Record<string, unknown>>('brand.json');
   const w = 'brand.json';
+  const defaultTheme = requireString(raw, 'defaultTheme', w);
+  if (defaultTheme !== 'light' && defaultTheme !== 'dark') {
+    throw new BrandContractError(`${w}: "defaultTheme" must be "light" or "dark", got "${defaultTheme}"`);
+  }
   return {
     name: requireString(raw, 'name', w),
     slug: requireString(raw, 'slug', w),
     description: requireString(raw, 'description', w),
     version: requireString(raw, 'version', w),
+    defaultTheme,
   };
 }
 
@@ -215,6 +220,7 @@ function toTokenConfig(
   colors: BrandColorsFile,
   typography: BrandTypographyFile,
   surface: BrandSurfaceFile,
+  theme: 'light' | 'dark',
 ): TokenConfig {
   return {
     colors: colors.colors,
@@ -222,7 +228,7 @@ function toTokenConfig(
     typography,
     surface: { radius: surface.radius, elevation: surface.elevation },
     spacing: { baseUnit: surface.spacingBaseUnit },
-    theme: 'dark',
+    theme,
   };
 }
 
@@ -252,7 +258,7 @@ export function loadBrand(): LoadedBrand {
   return {
     manifest,
     assets: toBrandAssets(assets),
-    config: toTokenConfig(colors, typography, surface),
+    config: toTokenConfig(colors, typography, surface, manifest.defaultTheme),
   };
 }
 

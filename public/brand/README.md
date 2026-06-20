@@ -37,6 +37,7 @@ public/brand/
 | `slug` | string | URL-safe id. |
 | `description` | string | One line. |
 | `version` | string | Free-form, e.g. `"1.0.0"`. |
+| `defaultTheme` | `"light"` \| `"dark"` | The tone the brand **loads in**. The viewer boots already showing the brand in this mode; the toggle still lets a reviewer inspect the other tone. |
 
 ### `colors.json` → `BrandColorsFile`
 | field | type | notes |

@@ -2,5 +2,6 @@
   "name": "Lumen",
   "slug": "lumen",
   "description": "Demo brand shipped with the template — replace with your brand.",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "defaultTheme": "dark"
 }

@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const brandStyles = generateInitialStyles(config);
 
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme={config.theme} suppressHydrationWarning>
       <head>
         {/* Inject exact token values server-side to eliminate first-paint flash */}
         <style dangerouslySetInnerHTML={{ __html: brandStyles }} />

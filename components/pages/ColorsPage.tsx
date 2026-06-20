@@ -5,6 +5,7 @@ import { useTokenConfig } from '@/hooks/useTokenConfig';
 import { useOverlay } from '@/context/OverlayContext';
 import { resolveTokens } from '@/lib/token-engine';
 import { hexToOklch, oklchToHex } from '@/lib/color-utils';
+import { SemanticRolesPanel } from '@/components/preview/sections/SemanticRolesPanel';
 import type { ColorStep, PrimitiveColors } from '@/types/tokens';
 
 // ── WCAG Contrast ───────────────────────────────────────────────────────────
@@ -154,6 +155,9 @@ export function ColorsPage() {
 
   return (
     <div style={{ backgroundColor: 'var(--color-surface)', minHeight: '100vh' }}>
+
+      {/* ── 0. Semantic Roles (bg/fg pairs + OKLCH, theme toggle) ───────── */}
+      <SemanticRolesPanel />
 
       {/* ── 1. Primitive Scales ─────────────────────────────────────────── */}
       <section

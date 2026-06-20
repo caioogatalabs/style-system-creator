@@ -37,6 +37,12 @@ export interface BrandManifest {
   description: string;
   /** Free-form version string for the brand package, e.g. "1.0.0". */
   version: string;
+  /**
+   * The tone the brand loads in. Unlike a theme *switcher*, this is the brand's
+   * own decision — the viewer boots already showing the brand in this mode.
+   * The theme toggle still lets a reviewer flip it to inspect the other tone.
+   */
+  defaultTheme: 'light' | 'dark';
 }
 
 // ── colors.json ──────────────────────────────────────────────────────────────
