@@ -16,20 +16,23 @@ import type {
 
 export const SCALE_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
 
-// Default lightness distribution (normalized 0-1, where 0 = darkest, 1 = lightest)
-// These ratios are interpolated between lightnessRange.min and lightnessRange.max
-const LIGHTNESS_RATIOS: Record<number, number> = {
+// Ratios for interpolating each half of the scale around the seed (step 500).
+// Light half: 0 = seed lightness, 1 = lightnessRange.max
+const LIGHT_HALF_RATIOS: Record<number, number> = {
   50: 1.000,
-  100: 0.969,
-  200: 0.906,
-  300: 0.806,
-  400: 0.680,
-  500: 0.554,
-  600: 0.428,
-  700: 0.315,
-  800: 0.201,
-  900: 0.088,
-  950: 0.000,
+  100: 0.930,
+  200: 0.789,
+  300: 0.565,
+  400: 0.283,
+};
+
+// Dark half: 0 = seed lightness, 1 = lightnessRange.min
+const DARK_HALF_RATIOS: Record<number, number> = {
+  600: 0.227,
+  700: 0.431,
+  800: 0.637,
+  900: 0.841,
+  950: 1.000,
 };
 
 // Chroma multiplier per step (reduces at extremes)
@@ -53,13 +56,26 @@ export function generateColorScale(
   seedHex: string,
   lightnessRange: LightnessRange = DEFAULT_LIGHTNESS_RANGE,
 ): ColorScale {
-  const { c: seedC, h: seedH } = hexToOklch(seedHex);
+  const { l: seedL, c: seedC, h: seedH } = hexToOklch(seedHex);
   const maxChroma = Math.max(seedC, 0.05);
   const { min, max } = lightnessRange;
 
   return SCALE_STEPS.map((step) => {
-    const l = min + LIGHTNESS_RATIOS[step] * (max - min);
-    const c = maxChroma * CHROMA_MAP[step];
+    let l: number;
+    if (step === 500) {
+      // Anchor: always the seed's own lightness
+      l = seedL;
+    } else if (step < 500) {
+      // Light half: interpolate from seedL toward max
+      l = seedL + LIGHT_HALF_RATIOS[step] * (max - seedL);
+    } else {
+      // Dark half: interpolate from seedL toward min
+      l = seedL - DARK_HALF_RATIOS[step] * (seedL - min);
+    }
+    l = Math.max(0, Math.min(1, l));
+
+    // Step 500 preserves seed chroma exactly; others scale relative to it
+    const c = step === 500 ? seedC : maxChroma * CHROMA_MAP[step];
     const h = seedH;
 
     const hex = oklchToHex(l, c, h);

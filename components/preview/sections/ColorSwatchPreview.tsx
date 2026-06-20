@@ -89,7 +89,7 @@ export function ColorSwatchPreview() {
       <div className="mb-8 flex gap-2">
         {COLOR_NAMES.map((name, colorIdx) => {
           const scale = scales[name];
-          const midStep = scale[6]; // step 600
+          const midStep = scale[5]; // step 500 (seed color)
           const textColor = getContrastColor(midStep.hex);
           return (
             <div

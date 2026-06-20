@@ -36,20 +36,27 @@ function LivePreview({
   borderWidth = '1px',
   borderStyle = 'solid',
   borderOpacity = 0.14,
+  radiusBase = 8,
+  cardPadding = 16,
 }: {
   borderWidth?: string;
   borderStyle?: string;
   borderOpacity?: number;
+  radiusBase?: number;
+  cardPadding?: number;
 }) {
+  const r1 = radiusBase >= 9999 ? '9999px' : `${Math.round(radiusBase * 0.5)}px`;
+  const r2 = radiusBase >= 9999 ? '9999px' : `${radiusBase}px`;
+  const r3 = radiusBase >= 9999 ? '9999px' : `${Math.round(radiusBase * 1.5)}px`;
   const borderColor = `oklch(0.60 0 0 / ${borderOpacity})`;
   return (
     <div className="flex gap-8 items-start flex-wrap">
       {/* Card */}
       <div
-        className="p-6"
         style={{
+          padding: cardPadding,
           border: `${borderWidth} ${borderStyle} ${borderColor}`,
-          borderRadius: 'var(--radius-3)',
+          borderRadius: r3,
           boxShadow: 'var(--shadow-2)',
           backgroundColor: 'var(--color-surface-raised)',
           width: 220,
@@ -77,7 +84,7 @@ function LivePreview({
             className="px-4 py-2.5 text-sm outline-none"
             style={{
               border: `${borderWidth} ${borderStyle} ${borderColor}`,
-              borderRadius: 'var(--radius-2)',
+              borderRadius: r2,
               backgroundColor: 'var(--color-surface-raised)',
               color: 'var(--color-text)',
               fontFamily: 'var(--font-body)',
@@ -95,7 +102,7 @@ function LivePreview({
             className="px-4 py-2.5 text-sm outline-none"
             style={{
               border: `2px solid var(--color-primary)`,
-              borderRadius: 'var(--radius-2)',
+              borderRadius: r2,
               backgroundColor: 'var(--color-surface-raised)',
               color: 'var(--color-text)',
               fontFamily: 'var(--font-body)',
@@ -114,7 +121,7 @@ function LivePreview({
           style={{
             backgroundColor: 'var(--color-primary)',
             color: 'var(--color-on-primary)',
-            borderRadius: 'var(--radius-2)',
+            borderRadius: r2,
             border: 'none',
             fontFamily: 'var(--font-body)',
           }}
@@ -126,7 +133,7 @@ function LivePreview({
           style={{
             backgroundColor: 'transparent',
             color: 'var(--color-text)',
-            borderRadius: 'var(--radius-2)',
+            borderRadius: r2,
             border: `${borderWidth} ${borderStyle} ${borderColor}`,
             fontFamily: 'var(--font-body)',
           }}
@@ -151,6 +158,7 @@ export function SurfaceOverlayPanel() {
     elevation: config.surface.elevation,
   });
 
+  const [localCardPadding, setLocalCardPadding] = useState(16);
   const [borderPresetIdx, setBorderPresetIdx] = useState(2);
   const [borderStyle, setBorderStyle] = useState<'solid' | 'dashed' | 'dotted'>('solid');
 
@@ -381,10 +389,18 @@ export function SurfaceOverlayPanel() {
                   <button
                     key={opt.value}
                     type="button"
+                    onClick={() => setLocalCardPadding(opt.value)}
                     className="flex items-center justify-between px-4 py-3 border text-left transition-colors"
                     style={{
-                      borderColor: 'var(--color-border)',
+                      borderColor:
+                        localCardPadding === opt.value
+                          ? 'var(--color-primary)'
+                          : 'var(--color-border)',
                       borderRadius: 'var(--radius-1)',
+                      backgroundColor:
+                        localCardPadding === opt.value
+                          ? 'oklch(from var(--color-primary) l c h / 0.08)'
+                          : 'transparent',
                     }}
                   >
                     <span className="text-sm" style={{ color: 'var(--color-text)' }}>
@@ -413,6 +429,8 @@ export function SurfaceOverlayPanel() {
               borderWidth={currentBorderPreset.width}
               borderStyle={borderStyle}
               borderOpacity={currentBorderPreset.opacity}
+              radiusBase={localSurface.radius}
+              cardPadding={localCardPadding}
             />
           </div>
         </div>
