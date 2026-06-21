@@ -24,8 +24,13 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
  */
 
 function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
+  // data-slot=card-content lets card-aware components (e.g. Calendar) drop their
+  // own bg-background and inherit the card surface instead of standing out.
   return (
-    <div className={`bg-card text-card-foreground border border-border rounded-xl shadow-2 p-6 mb-6 break-inside-avoid ${className}`}>
+    <div
+      data-slot="card-content"
+      className={`bg-card text-card-foreground border border-border rounded-xl shadow-2 p-6 mb-6 break-inside-avoid ${className}`}
+    >
       {children}
     </div>
   );

@@ -51,6 +51,7 @@ const STEP_MAP = {
     // Neutral-derived
     surface: 10,       // step 950
     surface_raised: 9, // step 900
+    muted: 8,          // step 800 — hover/highlight, must out-contrast raised
     text_body: 1,      // step 100
     text_muted: 4,     // step 400
     text_dim: 8,       // step 800
@@ -61,6 +62,7 @@ const STEP_MAP = {
     fill: 5, hover: 6, active: 7, text: 7, on: 0,
     surface: 0,        // step 50
     surface_raised: 1, // step 100
+    muted: 2,          // step 200 — hover/highlight, must out-contrast raised
     text_body: 9,      // step 900
     text_muted: 6,     // step 600
     text_dim: 2,       // step 200
@@ -167,9 +169,11 @@ export function computeTokenVars(
   vars['--primary-foreground']   = vars['--color-on-primary'];
   vars['--secondary']            = vars['--color-surface-raised'];
   vars['--secondary-foreground'] = vars['--color-text'];
-  vars['--muted']                = vars['--color-surface-raised'];
+  // muted/accent = hover/highlight surfaces — a step more contrasting than
+  // card/popover/raised so hovers stay visible when they land on those surfaces.
+  vars['--muted']                = n[m.muted].oklch;
   vars['--muted-foreground']     = vars['--color-text-muted'];
-  vars['--accent']               = vars['--color-surface-raised'];
+  vars['--accent']               = n[m.muted].oklch;
   vars['--accent-foreground']    = vars['--color-text'];
   vars['--border']               = vars['--color-border'];
   vars['--input']                = vars['--color-border-muted'];
