@@ -1,4 +1,37 @@
-import type { ResolvedTokens, TokenConfig } from '@/types/tokens';
+import type { ResolvedTokens, TokenConfig, ColorScale } from '@/types/tokens';
+import { hexToRgb } from '@/lib/color-utils';
+
+/** WCAG relative luminance from a hex color. */
+function relativeLuminance(hex: string): number {
+  const { r, g, b } = hexToRgb(hex);
+  const lin = (c: number) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+
+function contrastRatio(a: string, b: string): number {
+  const la = relativeLuminance(a);
+  const lb = relativeLuminance(b);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+/**
+ * Picks the "on" (foreground) color for a filled surface by CONTRAST rather
+ * than a fixed scale step. The fill (step 500) can be light (e.g. a lime brand
+ * primary) or dark; we return whichever scale endpoint — lightest (step 50) or
+ * darkest (step 950) — reads better on it. This is what keeps text legible on
+ * bright brand colors, where a fixed light-step foreground would wash out.
+ */
+function onColorFor(scale: ColorScale, fillIndex: number): string {
+  const fill = scale[fillIndex];
+  const lightEnd = scale[0]; // step 50
+  const darkEnd = scale[scale.length - 1]; // step 950
+  return contrastRatio(fill.hex, darkEnd.hex) >= contrastRatio(fill.hex, lightEnd.hex)
+    ? darkEnd.oklch
+    : lightEnd.oklch;
+}
 
 /**
  * Scale-step index mapping for theme inversion.
@@ -76,19 +109,19 @@ export function computeTokenVars(
   vars['--color-primary-hover']  = p[m.hover].oklch;
   vars['--color-primary-active'] = p[m.active].oklch;
   vars['--color-primary-text']   = p[m.text].oklch;
-  vars['--color-on-primary']     = p[m.on].oklch;
+  vars['--color-on-primary']     = onColorFor(p, m.fill);
 
   // ── Secondary fills & text ────────────────────────────────────────────────
   vars['--color-secondary']       = s[m.fill].oklch;
   vars['--color-secondary-hover'] = s[m.hover].oklch;
   vars['--color-secondary-text']  = s[m.text].oklch;
-  vars['--color-on-secondary']    = s[m.on].oklch;
+  vars['--color-on-secondary']    = onColorFor(s, m.fill);
 
   // ── Accent fills & text ───────────────────────────────────────────────────
   vars['--color-accent']       = a[m.fill].oklch;
   vars['--color-accent-hover'] = a[m.hover].oklch;
   vars['--color-accent-text']  = a[m.text].oklch;
-  vars['--color-on-accent']    = a[m.on].oklch;
+  vars['--color-on-accent']    = onColorFor(a, m.fill);
 
   // ── Borders (from neutral scale) ──────────────────────────────────────────
   vars['--color-border']       = n[m.border].oklch;
