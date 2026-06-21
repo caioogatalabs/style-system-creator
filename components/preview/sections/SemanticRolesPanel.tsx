@@ -51,7 +51,7 @@ function RoleCard({ role, vars }: { role: Role; vars: Record<string, string> }) 
         </div>
         <div className="flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full border border-border" style={{ backgroundColor: `var(${role.fg})` }} />
-          <span className="text-[9px] font-mono text-text-dim truncate">{fgVal}</span>
+          <span className="text-[9px] font-mono text-text-muted truncate">{fgVal}</span>
         </div>
       </div>
     </div>
