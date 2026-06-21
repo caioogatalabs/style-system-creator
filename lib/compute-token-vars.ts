@@ -129,6 +129,18 @@ export function computeTokenVars(
   vars['--color-border']       = n[m.border].oklch;
   vars['--color-border-muted'] = n[m.border_muted].oklch;
 
+  // ── Faithful surface overrides (per tone) ─────────────────────────────────
+  // When a brand imports a hand-designed theme, these replace the generated
+  // neutrals so borders/backgrounds/cards render exactly as designed. Applied
+  // before the shadcn bridge so the override propagates to every derived role.
+  const ov = config.surfaceOverrides?.[config.theme] ?? {};
+  if (ov.background) vars['--color-surface'] = ov.background;
+  if (ov.card) vars['--color-surface-raised'] = ov.card;
+  if (ov.foreground) vars['--color-text'] = ov.foreground;
+  if (ov.mutedForeground) vars['--color-text-muted'] = ov.mutedForeground;
+  if (ov.border) vars['--color-border'] = ov.border;
+  if (ov.input) vars['--color-border-muted'] = ov.input;
+
   // ── Status ────────────────────────────────────────────────────────────────
   vars['--color-danger']       = semanticColors.error;
   vars['--color-danger-muted'] = `oklch(from ${semanticColors.error} l c h / 0.1)`;
@@ -171,9 +183,9 @@ export function computeTokenVars(
   vars['--secondary-foreground'] = vars['--color-text'];
   // muted/accent = hover/highlight surfaces — a step more contrasting than
   // card/popover/raised so hovers stay visible when they land on those surfaces.
-  vars['--muted']                = n[m.muted].oklch;
+  vars['--muted']                = ov.muted ?? n[m.muted].oklch;
   vars['--muted-foreground']     = vars['--color-text-muted'];
-  vars['--accent']               = n[m.muted].oklch;
+  vars['--accent']               = ov.accent ?? n[m.muted].oklch;
   vars['--accent-foreground']    = vars['--color-text'];
   vars['--border']               = vars['--color-border'];
   vars['--input']                = vars['--color-border-muted'];
@@ -181,7 +193,7 @@ export function computeTokenVars(
   vars['--destructive']          = semanticColors.error;
   vars['--card']                 = vars['--color-surface-raised'];
   vars['--card-foreground']      = vars['--color-text'];
-  vars['--popover']              = vars['--color-surface-raised'];
+  vars['--popover']              = ov.popover ?? vars['--color-surface-raised'];
   vars['--popover-foreground']   = vars['--color-text'];
 
   return vars;

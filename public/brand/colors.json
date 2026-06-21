@@ -14,5 +14,29 @@
     "error": "#ef4444",
     "success": "#16a34a",
     "info": "#3b82f6"
+  },
+  "surfaces": {
+    "light": {
+      "background": "#fbfcf8",
+      "foreground": "#0f172a",
+      "card": "#ffffff",
+      "popover": "#ffffff",
+      "muted": "#f1f5f9",
+      "mutedForeground": "#64748b",
+      "accent": "#f0fdf4",
+      "border": "#e2e8f0",
+      "input": "#e2e8f0"
+    },
+    "dark": {
+      "background": "#020817",
+      "foreground": "#f8fafc",
+      "card": "#0f172a",
+      "popover": "#0f172a",
+      "muted": "#1e293b",
+      "mutedForeground": "#94a3b8",
+      "accent": "#1e293b",
+      "border": "#1e293b",
+      "input": "#334155"
+    }
   }
 }

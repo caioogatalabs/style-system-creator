@@ -21,6 +21,30 @@ export interface TypographyConfig {
   bodyWeight: number;
 }
 
+/**
+ * Optional faithful overrides for the neutral/surface tokens. When a brand is
+ * imported from a hand-designed theme, the engine can't reproduce these from a
+ * single neutral seed — so a brand may supply them verbatim per tone. Fields
+ * are named after shadcn roles so a theme export maps 1:1. Any omitted field
+ * falls back to the generated value.
+ */
+export interface SurfaceColorSet {
+  background?: string;
+  foreground?: string;
+  card?: string;
+  popover?: string;
+  muted?: string;
+  mutedForeground?: string;
+  accent?: string;
+  border?: string;
+  input?: string;
+}
+
+export interface SurfaceOverrides {
+  light?: SurfaceColorSet;
+  dark?: SurfaceColorSet;
+}
+
 export interface TokenConfig {
   colors: PrimitiveColors;
   lightnessRange: LightnessRange;
@@ -31,6 +55,8 @@ export interface TokenConfig {
   };
   spacing: { baseUnit: number };
   theme: 'light' | 'dark';
+  /** Faithful neutral/surface overrides (per tone). Optional. */
+  surfaceOverrides?: SurfaceOverrides;
 }
 
 export interface ColorStep {

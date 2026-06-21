@@ -24,6 +24,7 @@ import type {
   SemanticColors,
   TypographyConfig,
   ElevationLevel,
+  SurfaceOverrides,
 } from './tokens';
 
 // ── brand.json ───────────────────────────────────────────────────────────────
@@ -54,6 +55,13 @@ export interface BrandColorsFile {
   lightnessRange: LightnessRange;
   /** Fixed status colors (warning/error/success/info) as hex. */
   status: SemanticColors;
+  /**
+   * Optional faithful neutral/surface overrides (per tone). Supply these when
+   * importing a hand-designed theme so borders/backgrounds/cards render exactly
+   * as designed instead of being generated from the neutral seed. Omit to keep
+   * the generated neutrals.
+   */
+  surfaces?: SurfaceOverrides;
 }
 
 // ── typography.json ──────────────────────────────────────────────────────────

@@ -22,6 +22,7 @@ import type {
   BrandAssets,
   LoadedBrand,
 } from '@/types/brand';
+import type { SurfaceColorSet, SurfaceOverrides } from '@/types/tokens';
 
 /** Absolute path to the brand contract folder. */
 const BRAND_DIR = join(process.cwd(), 'public', 'brand');
@@ -107,6 +108,35 @@ function parseManifest(): BrandManifest {
   };
 }
 
+/** Optional hex field — validates only when present. */
+function optionalHex(obj: Record<string, unknown>, key: string, where: string): string | undefined {
+  if (obj[key] === undefined) return undefined;
+  return requireHex(obj, key, where);
+}
+
+const SURFACE_KEYS: (keyof SurfaceColorSet)[] = [
+  'background', 'foreground', 'card', 'popover', 'muted', 'mutedForeground', 'accent', 'border', 'input',
+];
+
+function parseSurfaceSet(raw: unknown, where: string): SurfaceColorSet {
+  const obj = (raw ?? {}) as Record<string, unknown>;
+  const set: SurfaceColorSet = {};
+  for (const key of SURFACE_KEYS) {
+    const v = optionalHex(obj, key, where);
+    if (v) set[key] = v;
+  }
+  return set;
+}
+
+function parseSurfaceOverrides(raw: Record<string, unknown>): SurfaceOverrides | undefined {
+  if (raw.surfaces === undefined) return undefined;
+  const s = raw.surfaces as Record<string, unknown>;
+  const out: SurfaceOverrides = {};
+  if (s.light !== undefined) out.light = parseSurfaceSet(s.light, 'colors.json → surfaces.light');
+  if (s.dark !== undefined) out.dark = parseSurfaceSet(s.dark, 'colors.json → surfaces.dark');
+  return out;
+}
+
 function parseColors(): BrandColorsFile {
   const raw = readJson<Record<string, unknown>>('colors.json');
   const w = 'colors.json';
@@ -130,6 +160,7 @@ function parseColors(): BrandColorsFile {
       success: requireHex(status, 'success', `${w} → status`),
       info: requireHex(status, 'info', `${w} → status`),
     },
+    surfaces: parseSurfaceOverrides(raw),
   };
 }
 
@@ -229,6 +260,7 @@ function toTokenConfig(
     surface: { radius: surface.radius, elevation: surface.elevation },
     spacing: { baseUnit: surface.spacingBaseUnit },
     theme,
+    surfaceOverrides: colors.surfaces,
   };
 }
 

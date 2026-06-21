@@ -45,6 +45,31 @@ public/brand/
 | `colors.primary` / `secondary` / `accent` / `neutral` | hex | 6-digit `#rrggbb`. Scales 50–950 are derived. |
 | `lightnessRange.min` / `max` | number | Lightness of step 950 / step 50 (e.g. `0.05` / `0.98`). |
 | `status.warning` / `error` / `success` / `info` | hex | Fixed status colors. |
+| `surfaces` | object \| omit | **Optional.** Faithful neutral overrides — see below. |
+
+#### `colors.json → surfaces` (optional — faithful theme import)
+
+The engine normally *generates* the neutral surfaces (background, card, border,
+muted, input) from the `neutral` seed. That approximates, but can't reproduce a
+hand-designed theme (e.g. a tweakcn export), where these are chosen
+independently. Supply `surfaces` to use the theme's exact values per tone; any
+omitted field falls back to the generated one. The keys mirror shadcn roles, so
+a theme export maps 1:1:
+
+```jsonc
+"surfaces": {
+  "light": {
+    "background": "#fbfcf8", "foreground": "#0f172a",
+    "card": "#ffffff", "popover": "#ffffff",
+    "muted": "#f1f5f9", "mutedForeground": "#64748b",
+    "accent": "#f0fdf4", "border": "#e2e8f0", "input": "#e2e8f0"
+  },
+  "dark": { "...": "same keys for the dark tone" }
+}
+```
+
+> The 4 brand colors (`primary`/`secondary`/`accent` seeds) are still generated
+> into scales — `surfaces` only overrides the **neutral** system.
 
 ### `typography.json` → `BrandTypographyFile`
 | field | type | notes |
