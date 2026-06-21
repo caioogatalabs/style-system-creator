@@ -1,7 +1,7 @@
 {
-  "name": "Lumen",
-  "slug": "lumen",
-  "description": "Demo brand shipped with the template — replace with your brand.",
+  "name": "Light Green",
+  "slug": "light-green",
+  "description": "Test brand imported from a tweakcn theme (Light Green).",
   "version": "1.0.0",
-  "defaultTheme": "dark"
+  "defaultTheme": "light"
 }

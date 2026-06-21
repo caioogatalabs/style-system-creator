@@ -1,8 +1,8 @@
 {
   "colors": {
-    "primary": "#6366f1",
-    "secondary": "#8b5cf6",
-    "accent": "#f59e0b",
+    "primary": "#aff33e",
+    "secondary": "#334155",
+    "accent": "#166534",
     "neutral": "#64748b"
   },
   "lightnessRange": {
@@ -12,7 +12,7 @@
   "status": {
     "warning": "#f59e0b",
     "error": "#ef4444",
-    "success": "#22c55e",
+    "success": "#16a34a",
     "info": "#3b82f6"
   }
 }

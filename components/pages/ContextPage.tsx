@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { Sun, Moon, ArrowUpRight, Minus, Plus, TrendingUp, Users, CreditCard, Activity } from 'lucide-react';
+import { Sun, Moon, Minus, Plus, TrendingUp, Github, MoreHorizontal } from 'lucide-react';
 import { useTokenConfigContext } from '@/context/TokenConfigContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,23 +10,32 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { Calendar } from '@/components/ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 
 /*
- * "In Context" — the brand's tokens applied to realistic, composed product UIs
- * (tweakcn's idea), built from the project's shadcn components. Everything is
- * driven by tokens through the shadcn bridge, so it always shows the loaded
- * client brand. Read-only, with a local theme toggle to preview the other tone.
+ * "In Context" — every shadcn component on one page (tweakcn's Cards demo),
+ * driven entirely by the loaded brand's tokens via the shadcn bridge. Read-only,
+ * with a local theme toggle to preview the other tone. Masonry layout via CSS
+ * columns so cards flow like the reference.
  */
-
-const SCENES = ['Cards', 'Dashboard', 'Marketing'] as const;
-type Scene = (typeof SCENES)[number];
-
-// ── Shared card shell (uses the shadcn `card` token = surface-raised) ─────────
 
 function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`bg-card text-card-foreground border border-border rounded-xl shadow-2 p-6 ${className}`}>
+    <div className={`bg-card text-card-foreground border border-border rounded-xl shadow-2 p-6 mb-6 break-inside-avoid ${className}`}>
       {children}
+    </div>
+  );
+}
+
+function CardTitle({ title, desc }: { title: string; desc?: string }) {
+  return (
+    <div className="mb-4">
+      <p className="text-base font-heading text-text">{title}</p>
+      {desc && <p className="text-sm text-text-muted mt-0.5">{desc}</p>}
     </div>
   );
 }
@@ -34,12 +43,7 @@ function Card({ children, className = '' }: { children: ReactNode; className?: s
 function Sparkline() {
   return (
     <svg viewBox="0 0 200 48" className="w-full h-12" fill="none" preserveAspectRatio="none">
-      <path
-        d="M0 38 C20 36 30 30 50 32 S90 40 110 30 150 8 200 6"
-        stroke="var(--color-primary)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M0 38 C20 36 30 30 50 32 S90 40 110 30 150 8 200 6" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -55,192 +59,17 @@ function MiniBars() {
   );
 }
 
-// ── Scene: Cards ──────────────────────────────────────────────────────────────
-
-function CardsScene() {
-  const [goal, setGoal] = useState(350);
-  return (
-    <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-      <Card>
-        <p className="text-sm text-text-muted">Total Revenue</p>
-        <p className="text-3xl font-heading mt-1 text-text">$15,231.89</p>
-        <p className="text-xs text-success mt-1 flex items-center gap-1"><TrendingUp size={12} /> +20.1% from last month</p>
-        <div className="mt-4"><Sparkline /></div>
-      </Card>
-
-      <Card>
-        <p className="text-base font-heading text-text">Upgrade your plan</p>
-        <p className="text-sm text-text-muted mt-1 mb-4">Unlock every brand surface.</p>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="ctx-name">Name</Label>
-            <Input id="ctx-name" placeholder="Evil Rabbit" />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="ctx-email">Email</Label>
-            <Input id="ctx-email" type="email" placeholder="you@acme.com" />
-          </div>
-          <div className="flex items-center gap-2 mt-1">
-            <Checkbox id="ctx-terms" defaultChecked />
-            <Label htmlFor="ctx-terms" className="text-text-muted">I agree to the terms</Label>
-          </div>
-          <div className="flex gap-2 mt-2">
-            <Button className="flex-1">Upgrade</Button>
-            <Button variant="outline">Cancel</Button>
-          </div>
-        </div>
-      </Card>
-
-      <Card>
-        <p className="text-sm text-text-muted">Move goal</p>
-        <div className="flex items-center justify-center gap-6 my-4">
-          <Button variant="outline" size="icon" onClick={() => setGoal((g) => Math.max(0, g - 10))}><Minus size={14} /></Button>
-          <div className="text-center">
-            <p className="text-4xl font-heading text-text">{goal}</p>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-text-muted">cal / day</p>
-          </div>
-          <Button variant="outline" size="icon" onClick={() => setGoal((g) => g + 10)}><Plus size={14} /></Button>
-        </div>
-        <MiniBars />
-        <Button variant="secondary" className="w-full mt-4">Set goal</Button>
-      </Card>
-    </div>
-  );
-}
-
-// ── Scene: Dashboard ──────────────────────────────────────────────────────────
-
-const KPIS = [
-  { label: 'Revenue', value: '$45,231', delta: '+20.1%', icon: CreditCard },
-  { label: 'Users', value: '2,350', delta: '+180.1%', icon: Users },
-  { label: 'Active', value: '12,234', delta: '+19%', icon: Activity },
-  { label: 'Growth', value: '+573', delta: '+201', icon: TrendingUp },
-];
-
-const ACTIVITY = [
-  { name: 'Olivia Martin', email: 'olivia@email.com', amount: '+$1,999.00' },
-  { name: 'Jackson Lee', email: 'jackson@email.com', amount: '+$39.00' },
-  { name: 'Isabella Nguyen', email: 'isabella@email.com', amount: '+$299.00' },
-  { name: 'William Kim', email: 'will@email.com', amount: '+$99.00' },
-];
-
-function DashboardScene() {
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-        {KPIS.map(({ label, value, delta, icon: Icon }) => (
-          <Card key={label} className="p-5">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-text-muted">{label}</p>
-              <Icon size={15} className="text-text-dim" />
-            </div>
-            <p className="text-2xl font-heading mt-2 text-text">{value}</p>
-            <p className="text-xs text-success mt-1">{delta}</p>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid gap-6" style={{ gridTemplateColumns: '1.6fr 1fr' }}>
-        <Card>
-          <p className="text-base font-heading text-text mb-1">Overview</p>
-          <p className="text-sm text-text-muted mb-4">Monthly performance</p>
-          <div className="flex items-end gap-2 h-48">
-            {[60, 80, 45, 90, 70, 100, 55, 75, 85, 65, 95, 50].map((h, i) => (
-              <span key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, backgroundColor: 'var(--color-primary)' }} />
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <p className="text-base font-heading text-text mb-1">Recent sales</p>
-          <p className="text-sm text-text-muted mb-4">265 sales this month</p>
-          <div className="flex flex-col gap-4">
-            {ACTIVITY.map((a) => (
-              <div key={a.email} className="flex items-center gap-3">
-                <span className="h-8 w-8 rounded-full bg-brand-secondary shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm text-text truncate">{a.name}</p>
-                  <p className="text-xs text-text-muted truncate">{a.email}</p>
-                </div>
-                <span className="text-sm font-mono text-text">{a.amount}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-}
-
-// ── Scene: Marketing ──────────────────────────────────────────────────────────
-
-function MarketingScene() {
-  return (
-    <div className="flex flex-col gap-8">
-      <Card className="p-12 text-center">
-        <Badge className="mb-4">New · v2</Badge>
-        <h2 className="text-4xl font-heading text-text max-w-2xl mx-auto leading-tight">
-          A brand system your whole team can sign off on.
-        </h2>
-        <p className="text-base text-text-muted mt-4 max-w-xl mx-auto">
-          Every token, in context, in the client&apos;s own tone — ready for approval.
-        </p>
-        <div className="flex items-center justify-center gap-3 mt-8">
-          <Button>Get started <ArrowUpRight size={14} /></Button>
-          <Button variant="outline">View docs</Button>
-        </div>
-      </Card>
-
-      <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-        {[
-          { t: 'Tokens', d: 'Color, type, surface and assets — one contract.' },
-          { t: 'In context', d: 'Real product surfaces, not just swatches.' },
-          { t: 'Themed', d: 'Loads in the brand’s own light or dark tone.' },
-        ].map((f) => (
-          <Card key={f.t}>
-            <p className="text-sm font-heading text-text">{f.t}</p>
-            <Separator className="my-3" />
-            <p className="text-sm text-text-muted">{f.d}</p>
-          </Card>
-        ))}
-      </div>
-
-      <Card className="flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <p className="text-sm font-heading text-text">Notifications</p>
-          <p className="text-xs text-text-muted">Get notified when a brand is ready to review.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Label htmlFor="ctx-notify" className="text-text-muted">Email me</Label>
-          <Switch id="ctx-notify" defaultChecked />
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-// ── Page ──────────────────────────────────────────────────────────────────────
-
 export function ContextPage() {
   const { config, dispatch } = useTokenConfigContext();
-  const [scene, setScene] = useState<Scene>('Cards');
+  const [goal, setGoal] = useState(350);
+  const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
     <div className="bg-surface min-h-screen px-6 py-12">
-      {/* Toolbar: scene tabs + theme toggle */}
       <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
-        <div className="flex items-center gap-1">
-          {SCENES.map((s) => (
-            <button
-              key={s}
-              onClick={() => setScene(s)}
-              className={`px-4 py-2 text-xs tracking-[0.12em] uppercase rounded transition-colors ${
-                scene === s ? 'text-text bg-surface-raised' : 'text-text-muted hover:text-text'
-              }`}
-            >
-              {s}
-            </button>
-          ))}
+        <div>
+          <h1 className="text-2xl font-heading text-text">In Context</h1>
+          <p className="text-sm text-text-muted mt-1">Every component, on the loaded brand.</p>
         </div>
         <button
           onClick={() => dispatch({ type: 'SET_THEME', theme: config.theme === 'dark' ? 'light' : 'dark' })}
@@ -252,9 +81,231 @@ export function ContextPage() {
         </button>
       </div>
 
-      {scene === 'Cards' && <CardsScene />}
-      {scene === 'Dashboard' && <DashboardScene />}
-      {scene === 'Marketing' && <MarketingScene />}
+      {/* Masonry of every component */}
+      <div className="[column-fill:_balance] gap-6 columns-1 md:columns-2 xl:columns-3">
+
+        {/* Buttons & badges */}
+        <Card>
+          <CardTitle title="Buttons & badges" />
+          <div className="flex flex-wrap gap-2 mb-4">
+            <Button>Default</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="destructive">Destructive</Button>
+            <Button variant="link">Link</Button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Badge>Default</Badge>
+            <Badge variant="secondary">Secondary</Badge>
+            <Badge variant="outline">Outline</Badge>
+            <Badge variant="destructive">Destructive</Badge>
+          </div>
+        </Card>
+
+        {/* Total revenue */}
+        <Card>
+          <p className="text-sm text-text-muted">Total Revenue</p>
+          <p className="text-3xl font-heading mt-1 text-text">$15,231.89</p>
+          <p className="text-xs text-success mt-1 flex items-center gap-1"><TrendingUp size={12} /> +20.1% from last month</p>
+          <div className="mt-4"><Sparkline /></div>
+        </Card>
+
+        {/* Create account */}
+        <Card>
+          <CardTitle title="Create an account" desc="Enter your email below to get started." />
+          <div className="flex gap-2 mb-4">
+            <Button variant="outline" className="flex-1"><Github size={14} /> GitHub</Button>
+            <Button variant="outline" className="flex-1">Google</Button>
+          </div>
+          <div className="flex items-center gap-3 mb-4">
+            <Separator className="flex-1" />
+            <span className="text-[10px] tracking-[0.15em] uppercase text-text-muted">or</span>
+            <Separator className="flex-1" />
+          </div>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="ctx-email">Email</Label>
+              <Input id="ctx-email" type="email" placeholder="you@acme.com" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="ctx-pw">Password</Label>
+              <Input id="ctx-pw" type="password" placeholder="••••••••" />
+            </div>
+            <Button className="w-full mt-1">Create account</Button>
+          </div>
+        </Card>
+
+        {/* Move goal */}
+        <Card>
+          <p className="text-sm text-text-muted">Move goal</p>
+          <div className="flex items-center justify-center gap-6 my-4">
+            <Button variant="outline" size="icon" onClick={() => setGoal((g) => Math.max(0, g - 10))}><Minus size={14} /></Button>
+            <div className="text-center">
+              <p className="text-4xl font-heading text-text">{goal}</p>
+              <p className="text-[10px] tracking-[0.2em] uppercase text-text-muted">cal / day</p>
+            </div>
+            <Button variant="outline" size="icon" onClick={() => setGoal((g) => g + 10)}><Plus size={14} /></Button>
+          </div>
+          <MiniBars />
+          <Button variant="secondary" className="w-full mt-4">Set goal</Button>
+        </Card>
+
+        {/* Calendar */}
+        <Card>
+          <CardTitle title="Calendar" />
+          <Calendar mode="single" selected={date} onSelect={setDate} className="w-full" />
+        </Card>
+
+        {/* Cookie settings */}
+        <Card>
+          <CardTitle title="Cookie settings" desc="Manage your cookie preferences." />
+          <div className="flex flex-col gap-4">
+            {[
+              { id: 'nec', label: 'Strictly necessary', on: true },
+              { id: 'fun', label: 'Functional', on: false },
+              { id: 'perf', label: 'Performance', on: true },
+            ].map((row) => (
+              <div key={row.id} className="flex items-center justify-between gap-4">
+                <div>
+                  <Label htmlFor={row.id} className="text-text">{row.label}</Label>
+                  <p className="text-xs text-text-muted">These cookies help us improve the experience.</p>
+                </div>
+                <Switch id={row.id} defaultChecked={row.on} />
+              </div>
+            ))}
+            <Button variant="outline" className="w-full">Save preferences</Button>
+          </div>
+        </Card>
+
+        {/* Report an issue */}
+        <Card>
+          <CardTitle title="Report an issue" desc="What area is affected?" />
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3">
+              <div className="flex-1 flex flex-col gap-1.5">
+                <Label>Area</Label>
+                <Select defaultValue="Billing">
+                  <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Billing">Billing</SelectItem>
+                    <SelectItem value="Login">Login</SelectItem>
+                    <SelectItem value="Performance">Performance</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex-1 flex flex-col gap-1.5">
+                <Label>Severity</Label>
+                <Select defaultValue="Medium">
+                  <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Low">Low</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="High">High</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="ctx-subject">Subject</Label>
+              <Input id="ctx-subject" placeholder="I need help with…" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="ctx-desc">Description</Label>
+              <Textarea id="ctx-desc" placeholder="Describe the issue…" rows={3} />
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" className="flex-1">Cancel</Button>
+              <Button className="flex-1">Submit</Button>
+            </div>
+          </div>
+        </Card>
+
+        {/* Team member with popover */}
+        <Card>
+          <CardTitle title="Team member" />
+          <div className="flex items-center gap-3">
+            <span className="h-9 w-9 rounded-full bg-brand-secondary shrink-0" />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm text-text truncate">Sofia Davis</p>
+              <p className="text-xs text-text-muted truncate">sofia@acme.com</p>
+            </div>
+            <Popover>
+              <PopoverTrigger className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border px-2.5 text-sm text-text hover:bg-muted transition-colors">
+                Member <MoreHorizontal size={14} />
+              </PopoverTrigger>
+              <PopoverContent className="w-44 p-1">
+                {['Viewer', 'Developer', 'Billing', 'Owner'].map((role) => (
+                  <button key={role} className="w-full text-left rounded-md px-2.5 py-1.5 text-sm text-text hover:bg-muted transition-colors">
+                    {role}
+                  </button>
+                ))}
+              </PopoverContent>
+            </Popover>
+          </div>
+        </Card>
+
+        {/* Notifications */}
+        <Card>
+          <CardTitle title="Notifications" desc="Choose what you want to hear about." />
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between gap-4">
+              <Label htmlFor="ntf-email" className="text-text">Email</Label>
+              <Switch id="ntf-email" defaultChecked />
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <Label htmlFor="ntf-push" className="text-text">Push</Label>
+              <Switch id="ntf-push" />
+            </div>
+            <Separator />
+            <div className="flex items-center gap-2">
+              <Checkbox id="ntf-terms" defaultChecked />
+              <Label htmlFor="ntf-terms" className="text-text-muted">Use different settings for mobile</Label>
+            </div>
+          </div>
+        </Card>
+
+        {/* Payments table */}
+        <Card>
+          <CardTitle title="Payments" desc="Recent transactions." />
+          <div className="flex flex-col">
+            <div className="grid grid-cols-3 gap-2 text-[10px] tracking-[0.12em] uppercase text-text-muted pb-2 border-b border-border">
+              <span>Status</span><span>Email</span><span className="text-right">Amount</span>
+            </div>
+            {[
+              { s: 'Success', v: 'default', e: 'ken@email.com', a: '$316.00' },
+              { s: 'Processing', v: 'secondary', e: 'abe@email.com', a: '$242.00' },
+              { s: 'Failed', v: 'destructive', e: 'mon@email.com', a: '$837.00' },
+            ].map((row) => (
+              <div key={row.e} className="grid grid-cols-3 gap-2 items-center py-2.5 border-b border-border last:border-0">
+                <span><Badge variant={row.v as 'default' | 'secondary' | 'destructive'}>{row.s}</Badge></span>
+                <span className="text-sm text-text-muted truncate">{row.e}</span>
+                <span className="text-sm font-mono text-text text-right">{row.a}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* FAQ accordion */}
+        <Card>
+          <CardTitle title="FAQ" />
+          <Accordion defaultValue={['item-1']}>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent><p className="text-text-muted">Yes. It follows WAI-ARIA patterns.</p></AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Is it themed by the brand?</AccordionTrigger>
+              <AccordionContent><p className="text-text-muted">Every surface here reads from the loaded brand tokens.</p></AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Can I switch tones?</AccordionTrigger>
+              <AccordionContent><p className="text-text-muted">Use the toggle up top to preview light or dark.</p></AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Card>
+
+      </div>
     </div>
   );
 }
