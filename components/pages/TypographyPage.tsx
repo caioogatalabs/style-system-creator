@@ -51,12 +51,6 @@ export function TypographyPage() {
           style={{ borderColor: 'var(--color-border)' }}
         >
           <div className="flex items-center gap-6">
-            <span
-              className="font-mono text-7xl font-light leading-none select-none"
-              style={{ color: 'var(--color-border)' }}
-            >
-              D
-            </span>
             <div>
               <div className="flex items-center gap-3 mb-1">
                 <span

@@ -54,13 +54,7 @@ export function SurfacePreview() {
         style={{ borderColor: 'var(--color-border)' }}
       >
         <div className="flex items-start gap-6">
-          <span
-            className="font-mono text-7xl font-light leading-none select-none"
-            style={{ color: 'var(--color-border)' }}
-          >
-            C
-          </span>
-          <div className="flex items-center gap-3 pt-4">
+          <div className="flex items-center gap-3">
             <span
               className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
               style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}

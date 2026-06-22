@@ -65,17 +65,14 @@ export function SemanticRolesPanel() {
   return (
     <section className="px-6 py-16 border-b border-border bg-surface">
       <div className="mb-10 flex items-start justify-between gap-6 border-b border-border pb-6">
-        <div className="flex items-start gap-6">
-          <span className="font-mono text-7xl font-light leading-none select-none text-border">R</span>
-          <div className="pt-4">
-            <div className="flex items-center gap-3 mb-1">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-text-muted text-[9px] font-mono text-text-muted">
-                0
-              </span>
-              <span className="text-xs tracking-[0.2em] uppercase text-text-muted">Semantic Roles</span>
-            </div>
-            <p className="text-sm mt-1 text-text-dim">Background / foreground pairs with resolved OKLCH — flip the tone to inspect.</p>
+        <div>
+          <div className="flex items-center gap-3 mb-1">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-text-muted text-[9px] font-mono text-text-muted">
+              0
+            </span>
+            <span className="text-xs tracking-[0.2em] uppercase text-text-muted">Semantic Roles</span>
           </div>
+          <p className="text-sm mt-1 text-text-dim">Background / foreground pairs with resolved OKLCH — flip the tone to inspect.</p>
         </div>
 
         {/* Local theme toggle (preview only) */}

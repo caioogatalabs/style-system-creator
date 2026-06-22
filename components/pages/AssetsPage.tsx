@@ -14,21 +14,16 @@ import { Check, X } from 'lucide-react';
 
 // ── Section header (matches the other pages' editorial style) ─────────────────
 
-function SectionHeader({ letter, num, label, desc }: { letter: string; num: string; label: string; desc?: string }) {
+function SectionHeader({ num, label, desc }: { num: string; label: string; desc?: string }) {
   return (
-    <div className="mb-10 flex items-start gap-6 border-b border-border pb-6">
-      <span className="font-mono text-7xl font-light leading-none select-none text-border">
-        {letter}
-      </span>
-      <div className="pt-4">
-        <div className="flex items-center gap-3 mb-1">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full border border-text-muted text-[9px] font-mono text-text-muted">
-            {num}
-          </span>
-          <span className="text-xs tracking-[0.2em] uppercase text-text-muted">{label}</span>
-        </div>
-        {desc && <p className="text-sm mt-1 text-text-dim">{desc}</p>}
+    <div className="mb-10 border-b border-border pb-6">
+      <div className="flex items-center gap-3 mb-1">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-text-muted text-[9px] font-mono text-text-muted">
+          {num}
+        </span>
+        <span className="text-xs tracking-[0.2em] uppercase text-text-muted">{label}</span>
       </div>
+      {desc && <p className="text-sm mt-1 text-text-dim">{desc}</p>}
     </div>
   );
 }
@@ -102,7 +97,7 @@ export function AssetsPage() {
 
       {/* ── 1. Logo ──────────────────────────────────────────────────────── */}
       <section className="px-6 py-16 border-b border-border">
-        <SectionHeader letter="L" num="1" label="Logo" desc={`${assets.logo.length} variants — test on different backgrounds.`} />
+        <SectionHeader num="1" label="Logo" desc={`${assets.logo.length} variants — test on different backgrounds.`} />
 
         {/* Background playground */}
         <div className="flex items-center gap-2 mb-8">
@@ -139,7 +134,7 @@ export function AssetsPage() {
 
       {/* ── 2. Icons ─────────────────────────────────────────────────────── */}
       <section className="px-6 py-16 border-b border-border">
-        <SectionHeader letter="I" num="2" label="Icons" desc={`${assets.icons.files.length} icons · ${assets.icons.style} style.`} />
+        <SectionHeader num="2" label="Icons" desc={`${assets.icons.files.length} icons · ${assets.icons.style} style.`} />
 
         <div className="flex items-center gap-2 mb-8">
           <span className="text-[10px] tracking-[0.15em] uppercase mr-2 text-text-muted">Size</span>
@@ -162,7 +157,7 @@ export function AssetsPage() {
 
       {/* ── 3. Images ────────────────────────────────────────────────────── */}
       <section className="px-6 py-16 border-b border-border">
-        <SectionHeader letter="M" num="3" label="Imagery" desc="Key images checked against the brand palette." />
+        <SectionHeader num="3" label="Imagery" desc="Key images checked against the brand palette." />
 
         <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
           {assets.images.map((img) => (
@@ -184,7 +179,7 @@ export function AssetsPage() {
 
       {/* ── 4. Tone of voice ─────────────────────────────────────────────── */}
       <section className="px-6 py-16 text-text">
-        <SectionHeader letter="V" num="4" label="Tone of Voice" desc={manifest.name + ' speaks like this.'} />
+        <SectionHeader num="4" label="Tone of Voice" desc={manifest.name + ' speaks like this.'} />
 
         <p className="text-xl leading-relaxed mb-12 max-w-2xl text-text font-heading">
           {assets.voice.summary}

@@ -34,41 +34,32 @@ import {
 
 // ── Shared helpers ──────────────────────────────────────────────────────────
 
-function SectionHeader({ letter, num, label, description }: {
-  letter: string;
+function SectionHeader({ num, label, description }: {
   num: string;
   label: string;
   description?: string;
 }) {
   return (
     <div
-      className="mb-10 flex items-start gap-6 border-b pb-6"
+      className="mb-10 border-b pb-6"
       style={{ borderColor: 'var(--color-border)' }}
     >
-      <span
-        className="font-mono text-7xl font-light leading-none select-none"
-        style={{ color: 'var(--color-border)' }}
-      >
-        {letter}
-      </span>
-      <div className="pt-4">
-        <div className="flex items-center gap-3 mb-1">
-          <span
-            className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
-            style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}
-          >
-            {num}
-          </span>
-          <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
-            {label}
-          </span>
-        </div>
-        {description && (
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-dim)' }}>
-            {description}
-          </p>
-        )}
+      <div className="flex items-center gap-3 mb-1">
+        <span
+          className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
+          style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}
+        >
+          {num}
+        </span>
+        <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+          {label}
+        </span>
       </div>
+      {description && (
+        <p className="text-sm mt-1" style={{ color: 'var(--color-text-dim)' }}>
+          {description}
+        </p>
+      )}
     </div>
   );
 }
@@ -137,23 +128,15 @@ export function ComponentsPage() {
     <div className="px-6 py-16" style={{ backgroundColor: 'var(--color-surface)', minHeight: '100vh' }}>
       {/* Page header */}
       <div
-        className="mb-12 flex items-start gap-6 border-b pb-6"
+        className="mb-12 border-b pb-6"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <span
-          className="font-mono text-7xl font-light leading-none select-none"
-          style={{ color: 'var(--color-border)' }}
-        >
-          L
+        <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+          Component Library
         </span>
-        <div className="pt-4">
-          <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
-            Component Library
-          </span>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-dim)' }}>
-            Interactive components consuming your semantic design tokens
-          </p>
-        </div>
+        <p className="text-sm mt-1" style={{ color: 'var(--color-text-dim)' }}>
+          Interactive components consuming your semantic design tokens
+        </p>
       </div>
 
       {/* ── Grid layout: 3 columns ── */}

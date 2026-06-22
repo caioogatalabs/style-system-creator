@@ -21,13 +21,6 @@ export function TypographyPreview() {
         style={{ borderColor: 'var(--color-border)' }}
       >
         <div className="flex items-center gap-6">
-          {/* Section number */}
-          <span
-            className="font-mono text-7xl font-light leading-none select-none"
-            style={{ color: 'var(--color-border)' }}
-          >
-            A
-          </span>
           <div>
             <div className="flex items-center gap-3 mb-1">
               <span

@@ -37,29 +37,21 @@ function getContrastColor(hex: string): string {
 
 // ── Sub-components ──────────────────────────────────────────────────────────
 
-function SectionHeader({ letter, num, label }: { letter: string; num: string; label: string }) {
+function SectionHeader({ num, label }: { num: string; label: string }) {
   return (
     <div
-      className="mb-10 flex items-start gap-6 border-b pb-6"
+      className="mb-10 flex items-center gap-3 border-b pb-6"
       style={{ borderColor: 'var(--color-border)' }}
     >
       <span
-        className="font-mono text-7xl font-light leading-none select-none"
-        style={{ color: 'var(--color-border)' }}
+        className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
+        style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}
       >
-        {letter}
+        {num}
       </span>
-      <div className="flex items-center gap-3 pt-4">
-        <span
-          className="flex h-5 w-5 items-center justify-center rounded-full border text-[9px] font-mono"
-          style={{ borderColor: 'var(--color-text-muted)', color: 'var(--color-text-muted)' }}
-        >
-          {num}
-        </span>
-        <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
-          {label}
-        </span>
-      </div>
+      <span className="text-xs tracking-[0.2em] uppercase" style={{ color: 'var(--color-text-muted)' }}>
+        {label}
+      </span>
     </div>
   );
 }
@@ -164,7 +156,7 @@ export function ColorsPage() {
         className="px-6 py-16 border-b"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <SectionHeader letter="E" num="1" label="Primitive Color Scales" />
+        <SectionHeader num="1" label="Primitive Color Scales" />
 
         <div className="flex flex-col gap-10">
           {COLOR_NAMES.map((name) => {
@@ -240,7 +232,7 @@ export function ColorsPage() {
         className="px-6 py-16 border-b"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <SectionHeader letter="F" num="2" label="Semantic Surfaces" />
+        <SectionHeader num="2" label="Semantic Surfaces" />
         <div className="grid gap-4" style={{ gridTemplateColumns: '1fr 1fr' }}>
           {[
             { varName: '--color-surface',             label: 'Page Background',   hex: bgHex        },
@@ -274,7 +266,7 @@ export function ColorsPage() {
         className="px-6 py-16 border-b"
         style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface)' }}
       >
-        <SectionHeader letter="G" num="3" label="Semantic Text Colors" />
+        <SectionHeader num="3" label="Semantic Text Colors" />
         <div
           className="p-8"
           style={{
@@ -333,7 +325,7 @@ export function ColorsPage() {
         className="px-6 py-16 border-b"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <SectionHeader letter="H" num="4" label="Semantic Fill Colors" />
+        <SectionHeader num="4" label="Semantic Fill Colors" />
         <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(7, 1fr)' }}>
           {[
             { varName: '--color-primary',         label: 'Primary',         hex: scales.primary[5].hex   },
@@ -372,7 +364,7 @@ export function ColorsPage() {
         className="px-6 py-16 border-b"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <SectionHeader letter="I" num="5" label="Semantic Borders" />
+        <SectionHeader num="5" label="Semantic Borders" />
         <div className="grid gap-6" style={{ gridTemplateColumns: '1fr 1fr' }}>
           {[
             { varName: '--color-border',   label: 'Primary Border',   desc: 'Dividers, section separators' },
@@ -406,7 +398,7 @@ export function ColorsPage() {
         className="px-6 py-16 border-b"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <SectionHeader letter="J" num="6" label="State Colors" />
+        <SectionHeader num="6" label="State Colors" />
         <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {STATE_COLORS.map(({ key, label, hex }) => (
             <div
@@ -453,7 +445,7 @@ export function ColorsPage() {
         className="px-6 py-16"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <SectionHeader letter="K" num="7" label="WCAG Contrast Checker" />
+        <SectionHeader num="7" label="WCAG Contrast Checker" />
         <div className="flex flex-col gap-3">
           {contrastPairs.map(({ label, fg, bg }) => {
             const ratio = contrastRatio(fg, bg);
